@@ -23,4 +23,10 @@ public class UserService {
         }
         return userModels;
     }
+
+    public UserModel registerUser(UserModel userModel) {
+        User user = new User(userModel);
+        return new UserModel(userRepository.saveAndFlush(user));
+    }
+
 }

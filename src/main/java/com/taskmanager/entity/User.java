@@ -1,6 +1,8 @@
 package com.taskmanager.entity;
 
 
+import com.taskmanager.model.UserModel;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,6 +26,13 @@ public class User implements Serializable {
 
     @Column(name = "last_name")
     private String lastName;
+
+    public User(UserModel userModel) {
+        this.username = userModel.getUsername();
+        this.password = userModel.getPassword();
+        this.firstName = userModel.getFirstName();
+        this.lastName = userModel.getLastName();
+    }
 
     public User(String username, String password, String firstName, String lastName) {
         this.username = username;

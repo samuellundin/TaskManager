@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from "../service/user.service";
 import {User} from "../model/user";
+import {CategoryService} from "../service/category.service";
+import {TaskService} from "../service/task.service";
 
 @Component({
   selector: 'app-home',
@@ -9,9 +11,13 @@ import {User} from "../model/user";
 })
 export class HomeComponent implements OnInit {
 
-  users: User[];
+  users: any;
+  tasks: any;
+  categories: any;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private taskService: TaskService,
+              private categoryService: CategoryService) {}
 
   ngOnInit() {
     this.userService.getAllUsers().subscribe(users => {
@@ -21,3 +27,4 @@ export class HomeComponent implements OnInit {
   }
 
 }
+

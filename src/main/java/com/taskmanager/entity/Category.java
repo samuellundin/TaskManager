@@ -16,7 +16,6 @@ public class Category implements Serializable {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public Category(String title, User user) {

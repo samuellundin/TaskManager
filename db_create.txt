@@ -1,4 +1,4 @@
-create table taskmanager.categories
+create table categories
 (
 	category_id bigint auto_increment
 		primary key,
@@ -11,7 +11,7 @@ create index categories_users_index
 	on categories (user_id)
 ;
 
-create table taskmanager.tasks
+create table tasks
 (
 	task_id bigint auto_increment
 		primary key,
@@ -22,26 +22,26 @@ create table taskmanager.tasks
 	category_id bigint not null,
 	user_id bigint not null,
 	constraint tasks_categories_fk
-		foreign key (category_id) references makeadifference.categories (category_id)
+		foreign key (category_id) references taskmanager.categories (category_id)
 )
-;
-
-create index tasks_category_index
-	on tasks (category_id)
 ;
 
 create index tasks_user_index
 	on tasks (user_id)
 ;
 
-create table taskmanager.users
+create index tasks_categories_index
+	on tasks (category_id)
+;
+
+create table users
 (
 	user_id bigint auto_increment
 		primary key,
 	username varchar(255) not null,
 	password varchar(255) not null,
 	first_name varchar(255) not null,
-	last_last varchar(255) not null
+	last_name varchar(255) null
 )
 ;
 
@@ -51,7 +51,6 @@ alter table categories
 ;
 
 alter table tasks
-	add constraint tasks_users__fk
+	add constraint tasks_users_fk
 		foreign key (user_id) references taskmanager.users (user_id)
 ;
-
