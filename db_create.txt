@@ -1,0 +1,57 @@
+create table taskmanager.categories
+(
+	category_id bigint auto_increment
+		primary key,
+	title varchar(255) not null,
+	user_id bigint not null
+)
+;
+
+create index categories_users_index
+	on categories (user_id)
+;
+
+create table taskmanager.tasks
+(
+	task_id bigint auto_increment
+		primary key,
+	title varchar(255) not null,
+	description varchar(255) not null,
+	start_date datetime not null,
+	end_date datetime not null,
+	category_id bigint not null,
+	user_id bigint not null,
+	constraint tasks_categories_fk
+		foreign key (category_id) references makeadifference.categories (category_id)
+)
+;
+
+create index tasks_category_index
+	on tasks (category_id)
+;
+
+create index tasks_user_index
+	on tasks (user_id)
+;
+
+create table taskmanager.users
+(
+	user_id bigint auto_increment
+		primary key,
+	username varchar(255) not null,
+	password varchar(255) not null,
+	first_name varchar(255) not null,
+	last_last varchar(255) not null
+)
+;
+
+alter table categories
+	add constraint categories_users_fk
+		foreign key (user_id) references taskmanager.users (user_id)
+;
+
+alter table tasks
+	add constraint tasks_users__fk
+		foreign key (user_id) references taskmanager.users (user_id)
+;
+
