@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
 public class Category implements Serializable {
 
     @Id
@@ -16,6 +16,7 @@ public class Category implements Serializable {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public Category(String title, User user) {

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "task")
 public class Task implements Serializable {
 
     @Id
@@ -26,9 +26,11 @@ public class Task implements Serializable {
     private LocalDateTime endDate;
 
     @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public Task(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Category category, User user) {
