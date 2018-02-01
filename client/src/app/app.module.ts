@@ -14,6 +14,10 @@ import {CategoryService} from "./service/category.service";
 import {HttpClientModule} from "@angular/common/http";
 import {TaskService} from "./service/task.service";
 import { RegisterComponent } from './register/register.component';
+import { TasksComponent } from './tasks/tasks.component';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { RegisterComponent } from './register/register.component';
     NavbarComponent,
     FooterComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    TasksComponent,
+    LoginComponent,
+    ProfileComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
