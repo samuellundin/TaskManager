@@ -1,0 +1,34 @@
+// user
+
+insert into user (first_name, last_name, password, username) values ('Hughie', 'Clother', 'SKFoTH', 'hclother0');
+insert into user (first_name, last_name, password, username) values ('Ilaire', 'Danilovich', 'iDsK7BBj1l9G', 'idanilovich1');
+insert into user (first_name, last_name, password, username) values ('Jarvis', 'Burstowe', 'FkgnPstBs78', 'jburstowe2');
+insert into user (first_name, last_name, password, username) values ('Pierson', 'Binny', 'Dw7u2L9EG', 'pbinny3');
+insert into user (first_name, last_name, password, username) values ('Adrianna', 'Tomeo', 'dZu1lHWl', 'atomeo4');
+insert into user (first_name, last_name, password, username) values ('Willyt', 'Zukierman', 'Q4SE0j', 'wzukierman5');
+insert into user (first_name, last_name, password, username) values ('Laryssa', 'Sacker', 'BrPb1eFPevuS', 'lsacker6');
+insert into user (first_name, last_name, password, username) values ('Bria', 'Spalding', '0E98i9a', 'bspalding7');
+insert into user (first_name, last_name, password, username) values ('Darla', 'Rigardeau', '7OBciLW', 'drigardeau8');
+insert into user (first_name, last_name, password, username) values ('Joseito', 'Obal', 'ZoAp8PP', 'jobal9');
+
+//category
+
+insert into category (title, user_id) values ('Under the Boardwalk: The Monopoly Story', 1);
+insert into category (title, user_id) values ('Boots and Saddles', 2);
+insert into category (title, user_id) values ('Spirits of the Dead', 3);
+insert into category (title, user_id) values ('Marci X', 4);
+insert into category (title, user_id) values ('Third Wave, The (Tredje vågen, Den)', 5);
+insert into category (title, user_id) values ('Interior. Leather Bar.', 6);
+insert into category (title, user_id) values ('Frontier of the Dawn (La frontière de l''aube)', 7);
+insert into category (title, user_id) values ('Gorgeous Hussy, The', 8);
+insert into category (title, user_id) values ('Justice League: Crisis on Two Earths', 9);
+insert into category (title, user_id) values ('Mother, Jugs & Speed', 10);
+
+// task
+
+insert into task (title, description, start_date, end_date, category_id, user_id) values ('Free Range (Ballaad maailma heakskiitmisest)', 'Nondisp seg fx shaft of rad, unsp arm, 7thB', '3/27/2017', '4/26/2017', 1, 1);
+insert into task (title, description, start_date, end_date, category_id, user_id) values ('Facing the Giants', 'Other streptococcal arthritis, unspecified elbow', '10/27/2017', '9/15/2017', 2, 2);
+insert into task (title, description, start_date, end_date, category_id, user_id) values ('Superman II', 'Disp fx of l tibial tuberosity, 7thG', '1/16/2018', '2/22/2017', 3, 3);
+insert into task (title, description, start_date, end_date, category_id, user_id) values ('Bean', 'Congenital bowing of long bones of leg, unspecified', '9/27/2017', '1/1/2018', 4, 4);
+insert into task (title, description, start_date, end_date, category_id, user_id) values ('Loved One, The', 'Oth injuries of unspecified wrist, hand and finger(s)', '12/19/2017', '3/13/2017', 5, 5);
+
