@@ -1,7 +1,31 @@
 <div class="header">
   <h1 class="display-4">Welcome @User!</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <p class="lead">Description...</p>
+
+  <!--<div class="userList" *ngIf="users.length">
+    <div class="user" *ngFor="let user of users">
+      {{user.firstName}}
+    </div>
+  </div>-->
+
 </div>
+
+
+<table *ngIf="users.length">
+  <thead>
+  <th>Task</th>
+  <th>Start</th>
+  <th>End</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{user.firstName}}</td>
+    <td>{{user.lastName}}</td>
+    <td>{{user.firstName}}</td>
+  </tr>
+</tbody>
+</table>
+
 
 <div class="tableContainer">
   <table>

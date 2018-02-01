@@ -3,12 +3,14 @@ import {UserService} from "../service/user.service";
 import {User} from "../model/user";
 import {CategoryService} from "../service/category.service";
 import {TaskService} from "../service/task.service";
+import {$} from "protractor";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
 
   users: any;
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit {
       console.log(users)
     });
   }
-
 }
+
+
 
