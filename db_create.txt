@@ -1,51 +1,42 @@
-create table category
-(
-	category_id bigint auto_increment
-		primary key,
+drop database if exists taskmanager;
+create database taskmanager;
+use taskmanager;
+
+create table user(
+	user_id bigint auto_increment primary key,
+	first_name varchar(255) null,
+	last_name varchar(255) null,
+	password varchar(255) null,
+	username varchar(255) null
+);
+
+create table category(
+	category_id bigint auto_increment primary key,
 	title varchar(255) not null,
-	user_id bigint not null
-)
-;
+	user_id bigint not null,
+	constraint category_user_fk foreign key (user_id) references taskmanager.user (user_id)
+);
 
 create index category_user_index
 	on category (user_id)
 ;
 
-create table task
-(
-	task_id bigint auto_increment
-		primary key,
+create table task(
+	task_id bigint auto_increment primary key,
 	title varchar(255) not null,
 	description varchar(255) not null,
 	start_date datetime not null,
 	end_date datetime not null,
 	category_id bigint not null,
 	user_id bigint not null,
-	constraint task_category_fk
-		foreign key (category_id) references taskmanager.category (category_id)
-)
-;
+	constraint task_category_fk foreign key (category_id) references taskmanager.category (category_id)
+);
 
-create index task_category_index
-	on task (category_id)
-;
+create index task_category_index on task (category_id);
 
-create index task_user_index
-	on task (user_id)
-;
+create index task_user_index on task (user_id);
 
-create table user
-(
-	user_id bigint auto_increment
-		primary key,
-	first_name varchar(255) null,
-	last_name varchar(255) null,
-	password varchar(255) null,
-	username varchar(255) null
-)
-;
 
 alter table task
-	add constraint task_user_fk
-		foreign key (user_id) references taskmanager.user (user_id)
+	add constraint task_user_fk foreign key (user_id) references taskmanager.user (user_id)
 ;
