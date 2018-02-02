@@ -1,3 +1,71 @@
-<p>
-  tasks works!
-</p>
+<div class="col-lg-7">
+  <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
+    <div class="form-group">
+      <label for="inputTaskTitle">Title:</label>
+      <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter task title" ngModel>
+    </div>
+    <div class="form-group">
+      <label for="inputDescription">Description:</label>
+      <input type="text" class="form-control" id="inputDescription" name="description" placeholder="Description of the task" ngModel>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check form-check-inline" type="radio" name="radioNoDate" id="radioNoDate" value="option1" checked (click)="showNoDateOption()" ngModel>
+      <label class="form-check-label mr-3" for="radioNoDate">
+        No specific date
+      </label>
+      <input class="form-check form-check-inline" type="radio" name="radioNoDate" id="radioOneDate" value="option2" (click)="showOneDateOption()" ngModel>
+      <label class="form-check-label mr-3" for="radioOneDate">
+        One date
+      </label>
+      <input class="form-check form-check-inline" type="radio" name="radioNoDate" id="radioTwoDates" value="option3" (change)="showTwoDatesOption()" ngModel>
+      <label class="form-check-label" for="radioTwoDates">
+        Start and end date
+      </label>
+    </div>
+
+
+    <div [hidden]="oneDateFieldIsHidden">
+      <label class="form-check-label" for="inputStartDate">
+        Start date
+      </label>
+      <div class="input-group" id="inputStartDate">
+        <input type="date" class="form-control" name="startDate" placeholder="Starting date" ngModel>
+        <input type="time" class="form-control" name="startTime" placeholder="Starting time" ngModel>
+      </div>
+    </div>
+
+    <div [hidden]="twoDatesFieldIsHidden">
+      <label class="form-check-label" for="inputEndDate">
+        End date
+      </label>
+      <div class="input-group" id="inputEndDate">
+        <input type="date" class="form-control" name="endDate" placeholder="Ending date" ngModel>
+        <input type="time" class="form-control" name="endTime" placeholder="Ending time" ngModel>
+      </div>
+    </div>
+
+    <hr>
+    <label for="inputCategoryDiv">Choose category:</label>
+    <div class="input-group mb-4" id="inputCategoryDiv">
+      <!--<select [(ngModel)]="category"">
+        <option *ngFor="let c of categories" [value]="c.id" [selected]="category.id == c.id">{{c.title}}</option>
+      </select-->
+      <select class="form-control col-lg-6" id="inputCategory" name ="category" ngModel>
+        <option>Category 1</option>
+        <option>Category 2</option>
+        <option>Category 3</option>
+      </select>
+      <button (click)="showNewCategory()" class="btn btn-secondary ml-4 btn-sm" type="button">...or add new category</button>
+    </div>
+
+    <div id="newCategoryDiv" [hidden]="newCategoryIsHidden">
+      <div class="input-group mb-4">
+        <input type="text" class="form-control" placeholder="New category title" #newCategoryInput>
+        <button (click)="addNewCategoryToSelection(newCategoryInput.value)" class="btn btn-secondary btn-sm ml-4" type="button">Save new category</button>
+      </div>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary">Create task</button>
+  </form>
+</div>
