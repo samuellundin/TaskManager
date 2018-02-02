@@ -16,14 +16,14 @@ public class TaskModel {
     private Category category;
     private User user;
 
-    public TaskModel(Task task, Category category, User user) {
+    public TaskModel(Task task) {
         this.taskId = task.getTaskId();
         this.title = task.getTitle();
         this.description = task.getDescription();
         this.startDate = task.getStartDate();
         this.endDate = task.getEndDate();
-        this.category = category;
-        this.user = user;
+        this.category = task.getCategory();
+        this.user = task.getUser();
     }
 
     public TaskModel(Long taskId, String title, String description, LocalDateTime startDate, LocalDateTime endDate, Category category, User user) {

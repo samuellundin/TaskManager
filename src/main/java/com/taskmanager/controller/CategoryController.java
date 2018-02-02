@@ -5,6 +5,7 @@ import com.taskmanager.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,11 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.GET)
     private ResponseEntity<List<CategoryModel>> getAllCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    private ResponseEntity<CategoryModel> registerCategory(@RequestBody CategoryModel categoryModel) {
+        return new ResponseEntity<>(categoryService.registerCategory(categoryModel), HttpStatus.OK);
     }
 
 }

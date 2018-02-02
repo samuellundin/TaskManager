@@ -1,5 +1,7 @@
 package com.taskmanager.entity;
 
+import com.taskmanager.model.TaskModel;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -33,13 +35,13 @@ public class Task implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    public Task(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Category category, User user) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.category = category;
-        this.user = user;
+    public Task(TaskModel taskModel) {
+        this.title = taskModel.getTitle();
+        this.description = taskModel.getDescription();
+        this.startDate = taskModel.getStartDate();
+        this.endDate = taskModel.getEndDate();
+        this.category = taskModel.getCategory();
+        this.user = taskModel.getUser();
     }
 
     public Task() {}

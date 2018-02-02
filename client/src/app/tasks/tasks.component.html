@@ -24,7 +24,6 @@
       </label>
     </div>
 
-
     <div [hidden]="oneDateFieldIsHidden">
       <label class="form-check-label" for="inputStartDate">
         Start date
@@ -51,12 +50,12 @@
       <!--<select [(ngModel)]="category"">
         <option *ngFor="let c of categories" [value]="c.id" [selected]="category.id == c.id">{{c.title}}</option>
       </select-->
-      <select class="form-control col-lg-6" id="inputCategory" name ="category" ngModel>
+      <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
         <option>Category 1</option>
         <option>Category 2</option>
         <option>Category 3</option>
       </select>
-      <button (click)="showNewCategory()" class="btn btn-secondary ml-4 btn-sm" type="button">...or add new category</button>
+      <button (click)="toggleNewCategory()" class="btn btn-secondary ml-4 btn-sm" type="button">...or add new category</button>
     </div>
 
     <div id="newCategoryDiv" [hidden]="newCategoryIsHidden">
