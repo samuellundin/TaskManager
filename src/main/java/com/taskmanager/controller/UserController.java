@@ -24,6 +24,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    private ResponseEntity<UserModel> getUser(UserModel userModel, Long id){
+        return new ResponseEntity<>(userService.getUser(userModel, id), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     private ResponseEntity<UserModel> registerUser(@RequestBody UserModel userModel) {
         return new ResponseEntity<>(userService.registerUser(userModel), HttpStatus.OK);
