@@ -9,14 +9,16 @@ import {User} from "../model/user";
 })
 export class ProfileComponent implements OnInit {
 
-  currentUser: any
+  currentUser: any;
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
 
-    this.currentUser = this.userService.getUser();
-    this.userService.getUser();
+    this.userService.getUser().subscribe(user =>{
+      this.currentUser = user;
+    })
+
   }
 
 
