@@ -6,13 +6,14 @@ import {TasksComponent} from "./tasks/tasks.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {AboutComponent} from "./about/about.component";
 import {LoginComponent} from "./login/login.component";
+import {AuthenticationGuard} from "./security/authentication.guard";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'tasks', component: TasksComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/register', component: RegisterComponent },
+  { path: 'tasks', component: TasksComponent, canActivate: [ AuthenticationGuard ] },
+  { path: 'profile', component: ProfileComponent, canActivate: [ AuthenticationGuard ] },
   { path: 'about', component: AboutComponent },
 
   { path: '**', redirectTo: 'home' }
@@ -23,3 +24,4 @@ const routes: Routes = [
   exports: [ RouterModule ]
 })
 export class AppRoutingModule {}
+
