@@ -80,6 +80,26 @@ export class TasksComponent implements OnInit {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
 
+  deleteCategory(){
+
+    this.categoryService.getAllCategories().subscribe(categories => {
+      let categoryList:any;
+
+      categoryList = categories;
+
+      console.log(this.selectedCategory);
+
+      for(let cat of categoryList) {
+        if(cat.title == this.selectedCategory) {
+          console.log("match, delete");
+          this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
+            console.log(response);
+          });
+        }
+      }
+    });
+  }
+
   addNewCategoryToSelection(title:string) {
     let newOption = document.createElement("option");
     newOption.text = title;
