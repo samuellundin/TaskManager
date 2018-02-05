@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../service/authentication.service";
+import {User} from "../model/user";
 
 @Component({
   selector: 'app-register',
@@ -19,6 +20,12 @@ export class RegisterComponent implements OnInit {
   register() {
     console.log(this.model);
     this.authenticationService.registerUser(this.model);
+
+
+  }
+
+  passwordMatch(): boolean {
+    return this.model.password == this.model.confirmPassword;
   }
 
 
