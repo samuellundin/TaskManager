@@ -45,4 +45,12 @@ public class UserService {
         return new UserModel(user);
     }
 
+    public User updateUser(UserModel userModel) throws DuplicateUserException {
+        if(!userRepository.findOne(userModel.getUserId()).getUsername().equals(userModel.getUsername())) {
+            if(userRepository.findByUsername(userModel.getUsername()) != null) {
+                throw new DuplicateUserException();
+            }
+        }
+        return userRepository.save(new User(userModel));
+    }
 }
