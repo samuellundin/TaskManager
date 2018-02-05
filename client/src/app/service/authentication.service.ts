@@ -38,7 +38,7 @@ export class AuthenticationService {
         this.router.navigate(['/home']);
       });
     }, error => {
-      console.log(error);
+      console.log(error.message);
     });
   }
 
