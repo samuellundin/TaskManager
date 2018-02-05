@@ -20,4 +20,6 @@ export class RegisterComponent implements OnInit {
     this.authenticationService.registerUser(this.model);
   }
 
+
+
 }
