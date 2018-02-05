@@ -28,4 +28,9 @@ public class CategoryService {
         Category category = new Category(categoryModel.getTitle(), categoryModel.getUser());
         return new CategoryModel(categoryRepository.saveAndFlush(category));
     }
+
+    public void deleteCategory(Long categoryId) {
+        System.out.println("delete in service");
+        categoryRepository.delete(categoryId);
+    }
 }
