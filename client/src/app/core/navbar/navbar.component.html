@@ -21,8 +21,11 @@
       </li>
     </ul>
     <div class="separator"></div>
-    <span class="navbar-text login-button" routerLink="/login" routerLinkActive="active">
+    <span *ngIf="!currentUser" class="navbar-text login-button" routerLink="/auth/login" routerLinkActive="active">
       <a>Sign in <i class="fa fa-user" aria-hidden="true"></i></a>
+    </span>
+    <span *ngIf="currentUser" class="navbar-text login-button" (click)="logout()">
+      <a>Log out <i class="fa fa-user" aria-hidden="true"></i></a>
     </span>
   </div>
 </nav>

@@ -5,10 +5,8 @@ import com.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,17 +14,33 @@ import java.util.List;
 @RequestMapping("api/users")
 public class UserController {
 
+    private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     private ResponseEntity<List<UserModel>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    private ResponseEntity<UserModel> registerUser(@RequestBody UserModel userModel) {
-        return new ResponseEntity<>(userService.registerUser(userModel), HttpStatus.OK);
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public ResponseEntity<UserModel> getUserByUsername(@PathVariable("username") String username) {
+        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    private ResponseEntity<UserModel> login(@RequestBody UserModel userModel) throws Exception {
+        UserModel user = userService.getUserByUsername(userModel.getUsername());
+        if(bCryptPasswordEncoder.matches(userModel.getPassword(), user.getPassword())) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            throw new Exception();
+        }
     }
 
 }

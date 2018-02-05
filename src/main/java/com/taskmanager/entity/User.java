@@ -28,17 +28,11 @@ public class User implements Serializable {
     private String lastName;
 
     public User(UserModel userModel) {
+        this.userId = userModel.getUserId();
         this.username = userModel.getUsername();
         this.password = userModel.getPassword();
         this.firstName = userModel.getFirstName();
         this.lastName = userModel.getLastName();
-    }
-
-    public User(String username, String password, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public User() {}

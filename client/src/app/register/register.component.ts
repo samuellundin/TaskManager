@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {UserService} from "../service/user.service";
-import {User} from "../model/user";
-import {FormGroup, FormControl, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from "../service/authentication.service";
 
 @Component({
   selector: 'app-register',
@@ -12,22 +10,14 @@ export class RegisterComponent implements OnInit {
 
   model: any = {};
 
-  constructor(private userService: UserService) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
   ngOnInit() {
 
   }
 
   register() {
-    console.log(this.model);
-    let user: User = new User;
-    user.username = this.model.email;
-    user.password = this.model.password;
-    user.firstName = this.model.firstName;
-    user.lastName = this.model.lastName;
-    this.userService.registerUser(user).subscribe(response => {
-      console.log(response);
-    });
+    this.authenticationService.registerUser(this.model);
   }
 
 }
