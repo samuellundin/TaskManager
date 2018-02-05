@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+    public AuthenticationController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

@@ -9,6 +9,12 @@ public class CategoryModel {
     private String title;
     private User user;
 
+    public CategoryModel(Category category) {
+        this.categoryId = category.getCategoryId();
+        this.title = category.getTitle();
+        this.user = category.getUser();
+    }
+
     public CategoryModel(Category category, User user) {
         this.categoryId = category.getCategoryId();
         this.title = category.getTitle();

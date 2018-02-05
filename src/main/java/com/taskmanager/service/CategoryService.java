@@ -24,4 +24,8 @@ public class CategoryService {
         return categoryModels;
     }
 
+    public CategoryModel registerCategory(CategoryModel categoryModel) {
+        Category category = new Category(categoryModel.getTitle(), categoryModel.getUser());
+        return new CategoryModel(categoryRepository.saveAndFlush(category));
+    }
 }
