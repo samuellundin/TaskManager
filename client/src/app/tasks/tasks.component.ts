@@ -6,6 +6,7 @@ import {UserService} from "../service/user.service";
 import {Category} from "../model/category";
 import {User} from "../model/user";
 import {forEach} from "@angular/router/src/utils/collection";
+import {AuthenticationService} from "../service/authentication.service";
 
 @Component({
   selector: 'app-tasks',
@@ -14,6 +15,7 @@ import {forEach} from "@angular/router/src/utils/collection";
 })
 export class TasksComponent implements OnInit {
 
+  currentUser: User;
   allCategories:any;
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
@@ -22,9 +24,14 @@ export class TasksComponent implements OnInit {
   returnedCategory:any;
   options:any;
 
-  constructor(private taskService: TaskService, private categoryService: CategoryService, private userService: UserService) { }
+  constructor(private taskService: TaskService, private categoryService: CategoryService,
+              private userService: UserService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.authenticationService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.newCategoryIsHidden = true;
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
@@ -72,14 +79,13 @@ export class TasksComponent implements OnInit {
     category.title = this.selectedCategory;
 
     //TODO: Nu lägger den till en dummy-user från db. Ändra till att lägga in inloggad user istället.
-    this.userService.getAllUsers().subscribe( users => {
-      category.user = users[0];
+    category.user = this.currentUser;
       this.categoryService.registerCategory(category).subscribe(response => {
         console.log("response:");
         console.log(response);
         this.returnedCategory = response;
       });
-    });
+
   }
 
   onSubmit(form: any): void {
@@ -99,13 +105,12 @@ export class TasksComponent implements OnInit {
 
     task.category = this.returnedCategory; //TODO: om man valt en kategori som redan fanns i listan måste denna kopplas in här
 
-    this.userService.getAllUsers().subscribe(users => {
-      task.user = users[0];
+    task.user = this.currentUser;
 
       this.taskService.registerTask(task).subscribe(response => {
         console.log(response);
       });
-    });
+
 
   }
 }

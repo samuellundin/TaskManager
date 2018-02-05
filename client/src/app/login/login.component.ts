@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    console.log(this.model);
     this.authenticationService.login(this.model);
   }
 

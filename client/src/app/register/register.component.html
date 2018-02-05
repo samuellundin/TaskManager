@@ -20,7 +20,7 @@
     <div class="form-group mb-2 text-left">
       <label>Email address(Username):</label>
       <input type="email" class="form-control" name="username" [(ngModel)]="model.username"
-             #email="ngModel" placeholder="Email address(Username)" required minlength="2" maxlength="100"
+             #username="ngModel" placeholder="Email address(Username)" required minlength="2" maxlength="100"
              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
       <div *ngIf="username.errors && (username.dirty || username.touched)" class="alert alert-danger">
         <div>Email address not valid</div>
@@ -29,7 +29,7 @@
 
     <div class="form-group mb-2 text-left">
       <label>Password:</label>
-      <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
+      <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required/>
       <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
         <div>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</div>
       </div>
@@ -37,7 +37,7 @@
 
     <div class="form-group mb-4 text-left">
       <label>Repeat password:</label>
-      <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="model.confirmPassword" #password="ngModel" placeholder="Repeat password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
+      <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="model.confirmPassword" #confirmPassword="ngModel" placeholder="Repeat password" required/>
       <div *ngIf="confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)" class="alert alert-danger">
         <div>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</div>
       </div>
