@@ -5,8 +5,10 @@ import com.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,12 +17,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -31,16 +31,6 @@ public class UserController {
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ResponseEntity<UserModel> getUserByUsername(@PathVariable("username") String username) {
         return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    private ResponseEntity<UserModel> login(@RequestBody UserModel userModel) throws Exception {
-        UserModel user = userService.getUserByUsername(userModel.getUsername());
-        if(bCryptPasswordEncoder.matches(userModel.getPassword(), user.getPassword())) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
-            throw new Exception();
-        }
     }
 
 }

@@ -15,5 +15,8 @@ export class UserService {
   getByUsername(username: string) {
     return this.http.get(USER.baseUrl + '/' + username);
   }
+  getUser(){
+    return this.http.get(USER.baseUrl );
+  }
 
 }

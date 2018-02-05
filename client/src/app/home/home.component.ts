@@ -1,5 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {UserService} from "../service/user.service";
+import {CategoryService} from "../service/category.service";
+import {TaskService} from "../service/task.service";
 
 @Component({
   selector: 'app-home',
@@ -8,7 +10,8 @@ import {UserService} from "../service/user.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit() {
     this.userService.getAllUsers().subscribe(data => {
