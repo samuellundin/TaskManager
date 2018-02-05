@@ -19,7 +19,7 @@ export class CategoryService {
 
   deleteCategory(categoryId: number) {
     console.log("delete catId " + categoryId + " in ts categoryservice");
-    return this.http.delete(CATEGORY.baseUrl + "delete/" + categoryId);
+    return this.http.delete(CATEGORY.baseUrl + "/delete/" + categoryId);
   }
 
 }
