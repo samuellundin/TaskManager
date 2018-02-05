@@ -51,6 +51,7 @@ public class UserService {
                 throw new DuplicateUserException();
             }
         }
+        userModel.setPassword(bCryptPasswordEncoder.encode(userModel.getPassword()));
         return userRepository.save(new User(userModel));
     }
 }
