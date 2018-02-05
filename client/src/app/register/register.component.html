@@ -26,6 +26,7 @@
       </div>
     </div>
 
+
     <div class="form-group mb-2 text-left">
       <label>Password:</label>
       <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel"
@@ -47,5 +48,6 @@
     <div class="form-group">
       <button class="btn btn-primary btn-block" [disabled]="!f.valid || !passwordMatch()">Register</button>
     </div>
+
   </form>
 </div>

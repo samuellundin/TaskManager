@@ -1,52 +1,47 @@
-<div class="container">
-  <div class="row">
+<div class="offset-2 col-8">
+  <h1 class="mb-4">Profile</h1>
+  <hr class="mb-4">
+  <form (ngSubmit)="f.valid && update()" #f="ngForm" novalidate>
+    <label>Email address (Username):</label>
+    <div class="mb-3 profile-field" *ngIf="!updatingUser">
+      {{currentUser.username}}
+    </div>
+    <div class="mb-3" *ngIf="updatingUser">
+      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.username" #username="ngModel" name="username">
+    </div>
 
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">Sheena Shrestha</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-lg-6"> <img src="/assets/profilePic.jpg"> </div>
+    <label>First name:</label>
+    <div class="mb-3 profile-field" *ngIf="!updatingUser">
+      {{currentUser.firstName}}
+    </div>
+    <div class="mb-3" *ngIf="updatingUser">
+      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.firstName" #firstName="ngModel" name="firstName">
+    </div>
 
-              <table class="table table-user-information col-lg-6">
-                <tbody>
-                <tr>
-                  <td>Department:</td>
-                  <td>Programming</td>
-                </tr>
-                <tr>
-                  <td>Hire date:</td>
-                  <td>06/23/2013</td>
-                </tr>
-                <tr>
-                  <td>Date of Birth</td>
-                  <td>01/24/1988</td>
-                </tr>
+    <label>Last name:</label>
+    <div class="mb-3 profile-field" *ngIf="!updatingUser">
+      {{currentUser.lastName}}
+    </div>
+    <div class="mb-3" *ngIf="updatingUser">
+      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.lastName" #lastName="ngModel" name="lastName">
+    </div>
 
-                <tr>
-                  <td>Gender</td>
-                  <td>Female</td>
-                </tr>
-                <tr>
-                  <td>Home Address</td>
-                  <td>Kathmandu,Nepal</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td><a href="mailto:info@support.com">info@support.com</a></td>
-                </tr>
-
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-
-        </div>
-        <div class="panel-footer">
-
-        </div>
-
+    <div class="mb-3" *ngIf="updatingUser">
+      <label>New Password:</label>
+      <input type="password" class="form-control profile-field" [(ngModel)]="password.newPassword" #newPassword="ngModel" name="newPassword">
+    </div>
+    <div class="mb-4" *ngIf="updatingUser">
+      <label>Confirm Password:</label>
+      <input type="password" class="form-control profile-field" [(ngModel)]="password.confirmNewPassword" #confirmNewPassword="ngModel" name="confirmNewPassword">
+    </div>
+  </form>
+  <hr class="mb-4">
+  <div class="text-right">
+    <button *ngIf="updatingUser" type="button" class="btn btn-danger" (click)="cancelUpdateUser()">Cancel</button>
+    <button *ngIf="updatingUser" type="button" class="btn btn-success ml-1" (click)="saveUpdatedUser()">Save</button>
+    <button *ngIf="!updatingUser" type="button" class="btn btn-primary ml-1" (click)="handleUpdateUser()">Update</button>
   </div>
 </div>
+
+
+
