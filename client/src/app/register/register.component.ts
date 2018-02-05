@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    console.log(this.model);
     this.authenticationService.registerUser(this.model);
   }
 

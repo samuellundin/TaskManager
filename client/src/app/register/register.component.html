@@ -5,7 +5,7 @@
       <label>First name:</label>
       <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" placeholder="First name" required minlength="2" pattern="[a-zA-Z0-9-]+"/>
       <div *ngIf="firstName.errors && (firstName.dirty || firstName.touched)" class="alert alert-danger">
-        <div>First name must be at least 2 characters</div>
+        <div>First name must be at least 2 characters(a-z)</div>
       </div>
     </div>
 
@@ -20,7 +20,7 @@
     <div class="form-group mb-2 text-left">
       <label>Email address(Username):</label>
       <input type="email" class="form-control" name="username" [(ngModel)]="model.username"
-             #email="ngModel" placeholder="Email address(Username)" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+             #username="ngModel" placeholder="Email address(Username)" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
       <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
         <div>Email address not valid</div>
       </div>

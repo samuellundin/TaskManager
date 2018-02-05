@@ -1,7 +1,10 @@
 package com.taskmanager.entity;
 
+import com.taskmanager.model.TaskModel;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,10 +23,10 @@ public class Task implements Serializable {
     private String description;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private Instant startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private Instant endDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
@@ -33,13 +36,13 @@ public class Task implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    public Task(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Category category, User user) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.category = category;
-        this.user = user;
+    public Task(TaskModel taskModel) {
+        this.title = taskModel.getTitle();
+        this.description = taskModel.getDescription();
+        this.startDate = taskModel.getStartDate();
+        this.endDate = taskModel.getEndDate();
+        this.category = taskModel.getCategory();
+        this.user = taskModel.getUser();
     }
 
     public Task() {}
@@ -68,19 +71,19 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 

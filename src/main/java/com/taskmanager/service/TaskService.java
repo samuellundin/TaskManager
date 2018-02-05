@@ -19,8 +19,13 @@ public class TaskService {
         List<Task> tasks = taskRepository.findAll();
         List<TaskModel> taskModels = new ArrayList<>();
         for(Task task: tasks) {
-            taskModels.add(new TaskModel(task, task.getCategory(), task.getUser()));
+            taskModels.add(new TaskModel(task));
         }
         return taskModels;
+    }
+
+    public TaskModel registerTask(TaskModel taskModel) {
+        Task task = new Task(taskModel);
+        return new TaskModel(taskRepository.saveAndFlush(task));
     }
 }
