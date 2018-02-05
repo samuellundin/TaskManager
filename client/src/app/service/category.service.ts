@@ -17,9 +17,9 @@ export class CategoryService {
     return this.http.post(CATEGORY.baseUrl, category);
   }
 
-  deleteCategory(categoryId: number) {
+  /*deleteCategory(categoryId: number) {
     console.log("delete catId " + categoryId + " in ts categoryservice");
     return this.http.delete(CATEGORY.baseUrl + "/delete/" + categoryId);
-  }
+  }*/
 
 }
