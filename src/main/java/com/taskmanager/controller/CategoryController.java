@@ -26,7 +26,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.registerCategory(categoryModel), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/delete/{categoryId}", method = RequestMethod.DELETE)
+    @RequestMapping("/delete/{categoryId}")
     private ResponseEntity deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return new ResponseEntity(HttpStatus.OK);
