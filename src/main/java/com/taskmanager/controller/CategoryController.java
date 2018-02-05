@@ -27,7 +27,7 @@ public class CategoryController {
     }
 
     @RequestMapping("/delete/{categoryId}")
-    private ResponseEntity deleteCategory(@PathVariable("categoryId") Long categoryId) {
+    private ResponseEntity deleteCategory(@PathVariable(value="categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return new ResponseEntity(HttpStatus.OK);
     }
