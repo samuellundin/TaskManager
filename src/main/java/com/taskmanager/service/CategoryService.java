@@ -1,6 +1,7 @@
 package com.taskmanager.service;
 
 import com.taskmanager.entity.Category;
+import com.taskmanager.entity.User;
 import com.taskmanager.model.CategoryModel;
 import com.taskmanager.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,15 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
         List<CategoryModel> categoryModels = new ArrayList<>();
         for(Category category: categories) {
+            categoryModels.add(new CategoryModel(category, category.getUser()));
+        }
+        return categoryModels;
+    }
+
+    public List<CategoryModel> getCategoriesByUseId(User user) {
+        List<Category> categories = categoryRepository.findAllByUser(user);
+        List<CategoryModel> categoryModels = new ArrayList<>();
+        for (Category category : categories) {
             categoryModels.add(new CategoryModel(category, category.getUser()));
         }
         return categoryModels;

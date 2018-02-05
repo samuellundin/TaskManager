@@ -89,14 +89,14 @@ export class TasksComponent implements OnInit {
 
       console.log(this.selectedCategory);
 
-      for(let cat of categoryList) {
+      /*for(let cat of categoryList) {
         if(cat.title == this.selectedCategory) {
           console.log("match, delete");
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
             console.log(response);
           });
         }
-      }
+      }*/
     });
   }
 
