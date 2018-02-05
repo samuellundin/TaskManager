@@ -43,3 +43,4 @@ testem.log
 Thumbs.db
 TaskManager.iml
 /client/node_modules/
+/target
