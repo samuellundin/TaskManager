@@ -4,6 +4,7 @@ import com.taskmanager.model.TaskModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,10 +23,10 @@ public class Task implements Serializable {
     private String description;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private Instant startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private Instant endDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
@@ -70,19 +71,19 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 

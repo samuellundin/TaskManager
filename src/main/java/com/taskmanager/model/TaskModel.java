@@ -4,6 +4,7 @@ import com.taskmanager.entity.Category;
 import com.taskmanager.entity.Task;
 import com.taskmanager.entity.User;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class TaskModel {
@@ -11,8 +12,8 @@ public class TaskModel {
     private Long taskId;
     private String title;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Instant startDate;
+    private Instant endDate;
     private Category category;
     private User user;
 
@@ -26,7 +27,7 @@ public class TaskModel {
         this.user = task.getUser();
     }
 
-    public TaskModel(Long taskId, String title, String description, LocalDateTime startDate, LocalDateTime endDate, Category category, User user) {
+    public TaskModel(Long taskId, String title, String description, Instant startDate, Instant endDate, Category category, User user) {
         this.taskId = taskId;
         this.title = title;
         this.description = description;
@@ -62,19 +63,19 @@ public class TaskModel {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 

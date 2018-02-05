@@ -14,33 +14,42 @@ import {forEach} from "@angular/router/src/utils/collection";
 })
 export class TasksComponent implements OnInit {
 
+  allCategories:any;
   newCategoryIsHidden:boolean;
-  oneDateFieldIsHidden:boolean;
-  twoDatesFieldIsHidden:boolean;
+  firstDateFieldIsHidden:boolean;
+  secondDateFieldIsHidden:boolean;
   selectedCategory:string;
-  finalCategory:any;
+  returnedCategory:any;
+  options:any;
 
   constructor(private taskService: TaskService, private categoryService: CategoryService, private userService: UserService) { }
 
   ngOnInit() {
     this.newCategoryIsHidden = true;
-    this.oneDateFieldIsHidden = true;
-    this.twoDatesFieldIsHidden = true;
+    this.firstDateFieldIsHidden = true;
+    this.secondDateFieldIsHidden = true;
+
+    this.categoryService.getAllCategories().subscribe(categories => {
+      this.allCategories = categories;
+    });
   }
 
   showNoDateOption() {
-    this.oneDateFieldIsHidden = true;
-    this.twoDatesFieldIsHidden = true;
+    this.firstDateFieldIsHidden = true;
+    this.secondDateFieldIsHidden = true;
+    this.options = 0;
   }
 
   showOneDateOption() {
-    this.oneDateFieldIsHidden = false;
-    this.twoDatesFieldIsHidden = true;
+    this.firstDateFieldIsHidden = false;
+    this.secondDateFieldIsHidden = true;
+    this.options = 1;
   }
 
   showTwoDatesOption() {
-    this.oneDateFieldIsHidden = false;
-    this.twoDatesFieldIsHidden = false;
+    this.firstDateFieldIsHidden = false;
+    this.secondDateFieldIsHidden = false;
+    this.options = 2;
   }
 
   toggleNewCategory() {
@@ -65,36 +74,38 @@ export class TasksComponent implements OnInit {
     //TODO: Nu lägger den till en dummy-user från db. Ändra till att lägga in inloggad user istället.
     this.userService.getAllUsers().subscribe( users => {
       category.user = users[0];
-
       this.categoryService.registerCategory(category).subscribe(response => {
+        console.log("response:");
         console.log(response);
-        this.finalCategory = response;
+        this.returnedCategory = response;
       });
     });
-
   }
 
   onSubmit(form: any): void {
-    console.log(form.startDate);
+    console.log(form);
     let task: Task = new Task();
 
     task.title = form.title;
     task.description = form.description;
 
-    if(form.startDate) task.startDate = new Date(form.startDate);
+    task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+    task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+
+    /*if(form.startDate) task.startDate = form.startDate;
     else task.startDate = null;
-    if(form.endDate) task.endDate = new Date(form.endDate);
-    else task.endDate = null;
+    if(form.endDate) task.endDate = form.endDate;
+    else task.endDate = null;*/
 
-    task.category = this.finalCategory; //TODO: om man valt en kategori som redan fanns i listan måste denna kopplas in här
-    task.user = null; //TODO: hämta inloggad user
+    task.category = this.returnedCategory; //TODO: om man valt en kategori som redan fanns i listan måste denna kopplas in här
 
+    this.userService.getAllUsers().subscribe(users => {
+      task.user = users[0];
 
-    this.taskService.registerTask(task).subscribe(response => {
-      console.log(response);
+      this.taskService.registerTask(task).subscribe(response => {
+        console.log(response);
+      });
     });
-
-
 
   }
 }

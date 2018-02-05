@@ -26,7 +26,7 @@ public class UserService {
 
     public UserModel getUser(UserModel userModel, Long id){
 
-        userModel = userRepository.findByOne(id);
+        userModel = new UserModel(userRepository.findOne(id));
         return userModel;
 
     }
