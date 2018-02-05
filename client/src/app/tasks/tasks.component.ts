@@ -16,6 +16,8 @@ import {AuthenticationService} from "../service/authentication.service";
 export class TasksComponent implements OnInit {
 
   currentUser: User;
+  userCategories:any;
+
   allCategories:any;
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
@@ -28,6 +30,7 @@ export class TasksComponent implements OnInit {
               private userService: UserService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+
     this.authenticationService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -35,6 +38,20 @@ export class TasksComponent implements OnInit {
     this.newCategoryIsHidden = true;
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
+
+    // Pushes users created categories into list userCategories
+    this.categoryService.getAllCategories().subscribe(categories => {
+      let categoryList:any;
+
+      categoryList = categories;
+
+      this.userCategories = [];
+      for(let cat of categoryList) {
+        if(cat.user.username == this.currentUser.username) {
+          this.userCategories.push(cat);
+        }
+      }
+    });
 
     this.categoryService.getAllCategories().subscribe(categories => {
       this.allCategories = categories;
@@ -103,13 +120,28 @@ export class TasksComponent implements OnInit {
     if(form.endDate) task.endDate = form.endDate;
     else task.endDate = null;*/
 
-    task.category = this.returnedCategory; //TODO: om man valt en kategori som redan fanns i listan måste denna kopplas in här
 
     task.user = this.currentUser;
+
+    this.categoryService.getAllCategories().subscribe(categories => {
+      let categoryList:any;
+
+      categoryList = categories;
+
+      console.log(this.selectedCategory);
+
+      for(let cat of categoryList) {
+        if(cat.title == this.selectedCategory) {
+          task.category = cat;
+        }
+      }
 
       this.taskService.registerTask(task).subscribe(response => {
         console.log(response);
       });
+    });
+
+
 
 
   }
