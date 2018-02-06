@@ -1,6 +1,6 @@
 <div class="col-lg-8">
   <h1 class="display-4">Welcome {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
-  <p class="lead">Here, you can view your tasks based on category. Click on each task to be taken to the task view, where you can edit and change your tasks. Enjoy!</p>
+  <p class="lead">Here, you can view your tasks based on category. Click on each task to be taken to the task view, where you can edit or complete any existing task. Enjoy!</p>
 </div>
 
 <div class="container" *ngIf="bool">
@@ -16,17 +16,72 @@
 <div class="container" *ngIf="bool">
 <div class="list-group">
   <ul class="col-lg-8">
-    <li class="list-group-item col-md-4 active odd">Task</li>
+    <li href="#myModal" class="list-group-item col-md-4 active odd">Task</li>
     <li class="list-group-item col-md-4 active odd">Start date</li>
     <li class="list-group-item col-md-4 active even">End date</li>
     <div *ngFor="let task of tasks">
-      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.title}}</button>
-      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
-      <button type="button" class="list-group-item list-group-item-action col-md-4 even">{{task.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
+      <button type="button" data-toggle="modal" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 odd">{{task.title}}</button>
+      <button type="button" data-toggle="modal" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 odd">{{task.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
+      <button type="button" data-toggle="modal" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 even">{{task.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
     </div>
   </ul>
 </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
+            <div class="form-group">
+              <label for="inputTaskTitle">Title:</label>
+              <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Edit task title" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="inputDescription">Description:</label>
+              <textarea class="form-control" rows="5" id="inputDescription" name="description" placeholder="Edit description of the task" ngModel></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-check-label" for="inputStartDate">
+                Start date
+              </label>
+              <div class="input-group" id="inputStartDate">
+                <input type="date" class="form-control" name="startDate" placeholder="Starting date" ngModel>
+                <input type="time" class="form-control" name="startTime" placeholder="Starting time" ngModel>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-check-label" for="inputEndDate">
+                End date
+              </label>
+              <div class="input-group" id="inputEndDate">
+                <input type="date" class="form-control" name="endDate" placeholder="Ending date" ngModel>
+                <input type="time" class="form-control" name="endTime" placeholder="Ending time" ngModel>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+
 
 <!--
 
