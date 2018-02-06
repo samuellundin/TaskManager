@@ -18,19 +18,18 @@ export class TasksComponent implements OnInit {
   currentUser: User;
   userCategories:any;
 
-  allCategories:any;
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
   secondDateFieldIsHidden:boolean;
+  categoryDeleteAlertIsHidden:boolean;
+
   selectedCategory:string;
-  returnedCategory:any;
   options:any;
 
   constructor(private taskService: TaskService, private categoryService: CategoryService,
               private userService: UserService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-
     this.authenticationService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -38,6 +37,7 @@ export class TasksComponent implements OnInit {
     this.newCategoryIsHidden = true;
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
+    this.categoryDeleteAlertIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -51,10 +51,12 @@ export class TasksComponent implements OnInit {
           this.userCategories.push(cat);
         }
       }
-    });
 
-    this.categoryService.getAllCategories().subscribe(categories => {
-      this.allCategories = categories;
+      this.userCategories.sort(function(a, b){
+        if(a.title < b.title) return -1;
+        if(a.title > b.title) return 1;
+        return 0;
+      })
     });
   }
 
@@ -76,30 +78,46 @@ export class TasksComponent implements OnInit {
     this.options = 2;
   }
 
+  showCategoryDeleteAlert() {
+    this.categoryDeleteAlertIsHidden = false;
+    console.log("shown");
+    setTimeout(() =>
+      {
+        this.hideCategoryDeleteAlert();
+      },
+      3500);
+  }
+
+  hideCategoryDeleteAlert() {
+    this.categoryDeleteAlertIsHidden = true;
+    console.log("hidden");
+  }
+
   toggleNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
 
   deleteCategory(){
-
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
 
       categoryList = categories;
 
-      console.log(this.selectedCategory);
-
-      /*for(let cat of categoryList) {
-        if(cat.title == this.selectedCategory) {
-          console.log("match, delete");
+      for(let cat of categoryList) {
+        if(this.selectedCategory == 'Standard') {
+          this.showCategoryDeleteAlert();
+        }
+        else if(cat.title == this.selectedCategory) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
+            console.log("response:");
             console.log(response);
           });
         }
-      }*/
+      }
     });
   }
 
+  // This saves category in db and puts in category selector
   addNewCategoryToSelection(title:string) {
     let newOption = document.createElement("option");
     newOption.text = title;
@@ -115,12 +133,9 @@ export class TasksComponent implements OnInit {
     let category: Category = new Category();
     category.title = this.selectedCategory;
 
-    //TODO: Nu lägger den till en dummy-user från db. Ändra till att lägga in inloggad user istället.
     category.user = this.currentUser;
       this.categoryService.registerCategory(category).subscribe(response => {
-        console.log("response:");
         console.log(response);
-        this.returnedCategory = response;
       });
 
   }
@@ -135,20 +150,12 @@ export class TasksComponent implements OnInit {
     task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
     task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
 
-    /*if(form.startDate) task.startDate = form.startDate;
-    else task.startDate = null;
-    if(form.endDate) task.endDate = form.endDate;
-    else task.endDate = null;*/
-
-
     task.user = this.currentUser;
 
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
 
       categoryList = categories;
-
-      console.log(this.selectedCategory);
 
       for(let cat of categoryList) {
         if(cat.title == this.selectedCategory) {
@@ -160,9 +167,6 @@ export class TasksComponent implements OnInit {
         console.log(response);
       });
     });
-
-
-
 
   }
 }
