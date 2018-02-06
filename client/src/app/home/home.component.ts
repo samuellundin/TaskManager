@@ -13,20 +13,12 @@ import {AuthenticationService} from "../service/authentication.service";
 export class HomeComponent implements OnInit {
 
   currentUser: any;
-
   categoriesByUser: any;
   categories: any;
-
-  tasks: any;
   users: any;
+  tasks: any;
 
-  categoryTitles: any;
-
-  taskTitles: any;
-  taskStartDates: any;
-  taskEndDates: any;
-
-
+  selectedCategory: any;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -42,13 +34,6 @@ export class HomeComponent implements OnInit {
     this.categoryService.getCategoryByUserId(this.currentUser.userId).subscribe(categoriesByUser => {
       this.categoriesByUser = categoriesByUser;
       console.log(categoriesByUser);
-
-      this.categoriesByUser.forEach(item => {
-        if(item.categoryId > 1) {
-          //Generate div
-        }
-      })
-
     });
 
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -62,10 +47,19 @@ export class HomeComponent implements OnInit {
 
     this.taskService.getAllTasks().subscribe(tasks => {
       this.tasks = tasks;
-
     });
 
-  }}
+  }
+
+  //get selected category
+  onChangeCategory(categoryObj) {
+    console.log(categoryObj);
+    this.selectedCategory = categoryObj;
+    // ... do other stuff here ...
+  }
+
+}
+
 
 /*this.taskStartDates = moment(this.tasks.startDate).format('YYYY-MM-DD');
       this.taskEndDates = moment(this.tasks.endDate).format('YYYY-MM-DD');
