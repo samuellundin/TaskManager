@@ -50,6 +50,9 @@
       <button class="btn btn-sm btn-outline-danger ml-1" type="button" (click)="deleteCategory()">Delete this category</button>
       <button (click)="toggleNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
     </div>
+    <div class="alert alert-danger" [hidden]="categoryDeleteAlertIsHidden">
+      <strong>Cannot delete!</strong> This is a standard fallback category and cannot be deleted.
+    </div>
 
     <div id="newCategoryDiv" [hidden]="newCategoryIsHidden">
       <div class="input-group mb-4">

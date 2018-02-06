@@ -21,6 +21,7 @@ export class TasksComponent implements OnInit {
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
   secondDateFieldIsHidden:boolean;
+  categoryDeleteAlertIsHidden:boolean;
 
   selectedCategory:string;
   options:any;
@@ -36,6 +37,7 @@ export class TasksComponent implements OnInit {
     this.newCategoryIsHidden = true;
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
+    this.categoryDeleteAlertIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -76,6 +78,21 @@ export class TasksComponent implements OnInit {
     this.options = 2;
   }
 
+  showCategoryDeleteAlert() {
+    this.categoryDeleteAlertIsHidden = false;
+    console.log("shown");
+    setTimeout(() =>
+      {
+        this.hideCategoryDeleteAlert();
+      },
+      3500);
+  }
+
+  hideCategoryDeleteAlert() {
+    this.categoryDeleteAlertIsHidden = true;
+    console.log("hidden");
+  }
+
   toggleNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
@@ -87,7 +104,10 @@ export class TasksComponent implements OnInit {
       categoryList = categories;
 
       for(let cat of categoryList) {
-        if(cat.title == this.selectedCategory) {
+        if(this.selectedCategory == 'Standard') {
+          this.showCategoryDeleteAlert();
+        }
+        else if(cat.title == this.selectedCategory) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
             console.log("response:");
             console.log(response);
