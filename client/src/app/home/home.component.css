@@ -10,6 +10,39 @@
   float: right;
 }
 
+.control:hover ~ .target {
+  background: whitesmoke;
+}
+
+button:focus {
+  outline: none;
+}
+
+.badge {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+.badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.badge-inverse {
+  background-color: #333333;
+  float: right;
+}
+.badge-inverse:hover {
+  background-color: #1a1a1a;
+}
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
