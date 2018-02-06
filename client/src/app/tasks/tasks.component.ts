@@ -18,10 +18,10 @@ export class TasksComponent implements OnInit {
   currentUser: User;
   userCategories:any;
 
-  allCategories:any;
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
   secondDateFieldIsHidden:boolean;
+
   selectedCategory:string;
   options:any;
 
@@ -29,7 +29,6 @@ export class TasksComponent implements OnInit {
               private userService: UserService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-
     this.authenticationService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -50,6 +49,7 @@ export class TasksComponent implements OnInit {
           this.userCategories.push(cat);
         }
       }
+
       this.userCategories.sort(function(a, b){
         if(a.title < b.title) return -1;
         if(a.title > b.title) return 1;
@@ -81,7 +81,6 @@ export class TasksComponent implements OnInit {
   }
 
   deleteCategory(){
-
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
 
@@ -131,20 +130,12 @@ export class TasksComponent implements OnInit {
     task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
     task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
 
-    /*if(form.startDate) task.startDate = form.startDate;
-    else task.startDate = null;
-    if(form.endDate) task.endDate = form.endDate;
-    else task.endDate = null;*/
-
-
     task.user = this.currentUser;
 
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
 
       categoryList = categories;
-
-      console.log(this.selectedCategory);
 
       for(let cat of categoryList) {
         if(cat.title == this.selectedCategory) {
@@ -156,9 +147,6 @@ export class TasksComponent implements OnInit {
         console.log(response);
       });
     });
-
-
-
 
   }
 }

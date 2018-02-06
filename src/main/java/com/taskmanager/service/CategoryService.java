@@ -1,8 +1,10 @@
 package com.taskmanager.service;
 
+import com.taskmanager.controller.TaskController;
 import com.taskmanager.entity.Category;
 import com.taskmanager.entity.User;
 import com.taskmanager.model.CategoryModel;
+import com.taskmanager.model.TaskModel;
 import com.taskmanager.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TaskService taskService;
 
     public List<CategoryModel> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
@@ -46,8 +51,20 @@ public class CategoryService {
         }
         catch(org.springframework.dao.DataIntegrityViolationException e) {
             System.out.println("--- COULD NOT DELETE BECAUSE CATEGORY IS CONNECTED TO A TASK ---");
-            //TODO: Should return info to user, OR switch category on all connected tasks to
-            //TODO:     a fallback default category, and then try to remove category again.
+
+            List<TaskModel> tasks = taskService.getAllTasks();
+            System.out.println(tasks);
+
+            //Sets all tasks with categoryId to default fallback category
+            for(TaskModel task: tasks) {
+                if(task.getCategory().getCategoryId().equals(categoryId)) {
+                    System.out.println("--- Category exists in task: " + task.getTitle() + " ---");
+                    task.setCategory(categoryRepository.findOne(Long.parseLong("2")));  //id 2 hardcoded as "default" category
+                    System.out.println("--- New category for these tasks: " + categoryRepository.findOne(Long.parseLong("2")).getTitle() + " ---");
+                    taskService.updateTask(task);
+                }
+            }
+            deleteCategory(categoryId);
         }
     }
 }
