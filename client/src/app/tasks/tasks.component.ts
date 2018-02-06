@@ -23,6 +23,7 @@ export class TasksComponent implements OnInit {
   secondDateFieldIsHidden:boolean;
   categoryDeleteFailIsHidden:boolean;
   categoryDeleteSuccessIsHidden:boolean;
+  taskSavedAlertIsHidden:boolean;
 
   selectedCategory:string;
   options:any;
@@ -40,6 +41,7 @@ export class TasksComponent implements OnInit {
     this.secondDateFieldIsHidden = true;
     this.categoryDeleteFailIsHidden = true;
     this.categoryDeleteSuccessIsHidden = true;
+    this.taskSavedAlertIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -55,8 +57,8 @@ export class TasksComponent implements OnInit {
       }
 
       this.userCategories.sort(function(a, b){
-        if(a.title < b.title) return -1;
-        if(a.title > b.title) return 1;
+        if(a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+        if(a.title.toLowerCase() > b.title.toLowerCase()) return 1;
         return 0;
       })
     });
@@ -99,11 +101,20 @@ export class TasksComponent implements OnInit {
   }
   hideCategoryDeleteSuccessAlert() { this.categoryDeleteSuccessIsHidden = true; }
 
+  showTaskSavedAlert() {
+    this.taskSavedAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTaskSavedAlert();
+      },
+      3500);
+  }
+  hideTaskSavedAlert() { this.taskSavedAlertIsHidden = true }
+
   toggleShowNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
 
-  //TODO: Fix so that deleted category also immediately is removed from selector
   deleteCategory(){
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
@@ -116,17 +127,21 @@ export class TasksComponent implements OnInit {
         }
         else if(cat.title == this.selectedCategory) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
-            console.log("response:");
             console.log(response);
             this.showCategoryDeleteSuccessAlert();
 
             let categoryToRemove = document.getElementById(this.selectedCategory);
             let select = document.getElementById("inputCategory");
             select.removeChild(categoryToRemove);
-            /*newOption.selected = true;
-            this.selectedCategory = title;*/
 
-            this.toggleShowNewCategory();
+            try {
+              let newSelection:any = document.getElementById(select.children.item(0).id);
+              newSelection.selected = true;
+              this.selectedCategory = newSelection.id;
+            } catch(e) {
+              console.log(e);
+            }
+
           });
         }
       }
@@ -182,6 +197,7 @@ export class TasksComponent implements OnInit {
 
       this.taskService.registerTask(task).subscribe(response => {
         console.log(response);
+        this.showTaskSavedAlert();
       });
     });
 
