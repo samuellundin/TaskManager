@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit {
   startDate: any;
   endDate: any;
 
+  selectedTask: any;
+
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
               private userService: UserService,
@@ -71,6 +73,18 @@ export class HomeComponent implements OnInit {
     } else {
       this.tasksByCategory = this.tasks.filter((task) => task.category.categoryId == categoryId);
     }
+  }
+
+  toggle(event) {
+    console.log(event.target);
+    this.selectedTask = event.target;
+  }
+
+  //get selected category
+  onChangeTask(taskId) {
+    console.log(taskId);
+    this.selectedTask = taskId;
+    // ...
   }
 
 }

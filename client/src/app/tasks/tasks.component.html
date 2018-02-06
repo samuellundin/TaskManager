@@ -45,7 +45,7 @@
     <label for="inputCategoryDiv">Choose category:</label>
     <div class="input-group mb-4" id="inputCategoryDiv">
       <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
-        <option *ngFor="let category of userCategories" value="{{category.title}}">{{category.title}}</option>
+        <option *ngFor="let category of userCategories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
       </select>
       <button class="btn btn-sm btn-outline-danger ml-1" type="button" (click)="deleteCategory()">Delete this category</button>
       <button (click)="toggleShowNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
