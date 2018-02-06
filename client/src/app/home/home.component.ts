@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
 
   selectedCategory: any;
 
+  tasksByCategoryId: any;
+
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
               private userService: UserService,
@@ -35,6 +37,11 @@ export class HomeComponent implements OnInit {
       this.categoriesByUser = categoriesByUser;
       console.log(categoriesByUser);
     });
+
+    /*this.taskService.getTaskByCategoryId(this.selectedCategory).subscribe(tasksByCategoryId => {
+      this.tasksByCategoryId = tasksByCategoryId;
+      console.log(tasksByCategoryId);
+    });*/
 
     this.categoryService.getAllCategories().subscribe(categories => {
       this.categories = categories;
