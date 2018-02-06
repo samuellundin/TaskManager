@@ -1,8 +1,10 @@
 package com.taskmanager.service;
 
+import com.taskmanager.controller.TaskController;
 import com.taskmanager.entity.Category;
 import com.taskmanager.entity.User;
 import com.taskmanager.model.CategoryModel;
+import com.taskmanager.model.TaskModel;
 import com.taskmanager.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TaskService taskService;
 
     public List<CategoryModel> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
@@ -44,10 +49,24 @@ public class CategoryService {
             categoryRepository.delete(categoryId);
             System.out.println("--- DELETED CATEGORY " + categoryId + " SUCCESSFULLY ---");
         }
+
+        /* If category is already connected to tasks, these tasks will have their category changed to
+           a fallback 'standard' category and then chosen category will be deleted once its freed */
         catch(org.springframework.dao.DataIntegrityViolationException e) {
             System.out.println("--- COULD NOT DELETE BECAUSE CATEGORY IS CONNECTED TO A TASK ---");
-            //TODO: Should return info to user, OR switch category on all connected tasks to
-            //TODO:     a fallback default category, and then try to remove category again.
+
+            List<TaskModel> tasks = taskService.getAllTasks();
+
+            for(TaskModel task: tasks) {
+                if(task.getCategory().getCategoryId().equals(categoryId)) {
+                    System.out.println("--- CATEGORY EXISTS IN TASK: " + task.getTitle() + " ---");
+                    Category fallbackCategory = categoryRepository.findOne(Long.parseLong("2"));
+                    task.setCategory(fallbackCategory);  //id 2 hardcoded as "default" category
+                    System.out.println("--- NEW CATEGORY FOR THESE TASKS: " + fallbackCategory.getTitle() + "(id:" + fallbackCategory.getCategoryId() + ") ---");
+                    taskService.updateTask(task);
+                }
+            }
+            deleteCategory(categoryId);
         }
     }
 }
