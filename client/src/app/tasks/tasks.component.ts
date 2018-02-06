@@ -125,7 +125,7 @@ export class TasksComponent implements OnInit {
         if(this.selectedCategory == 'Standard') {
           this.showCategoryDeleteFailAlert();
         }
-        else if(cat.title == this.selectedCategory) {
+        else if(cat.title == this.selectedCategory && cat.user.username == this.currentUser.username) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
             console.log(response);
             this.showCategoryDeleteSuccessAlert();
@@ -173,7 +173,6 @@ export class TasksComponent implements OnInit {
   }
 
   onSubmit(form: any): void {
-    console.log(form);
     let task: Task = new Task();
 
     task.title = form.title;
