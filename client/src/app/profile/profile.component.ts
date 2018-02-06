@@ -10,12 +10,9 @@ import {AuthenticationService} from "../service/authentication.service";
 })
 export class ProfileComponent implements OnInit {
 
-  password: any = {};
-  newPassword: string = '';
-  confirmNewPassword: string = '';
+  model: any = {};
   currentUser: any;
   updatingUser: boolean = false;
-  model: any = {};
 
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService) { }
@@ -27,17 +24,24 @@ export class ProfileComponent implements OnInit {
   }
 
   handleUpdateUser() {
-    this.updatingUser = !this.updatingUser;
+    this.model = this.currentUser;
+    this.model.password = '';
+    this.updatingUser = true;
   }
 
   saveUpdatedUser() {
     this.userService.updateUser(this.currentUser).subscribe(data => {
-      console.log(data)
+      this.currentUser = data;
     });
     console.log(this.currentUser)
   }
 
   cancelUpdateUser() {
+    this.model = {};
+    this.authenticationService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+    });
     this.updatingUser = false;
   }
+
 }
