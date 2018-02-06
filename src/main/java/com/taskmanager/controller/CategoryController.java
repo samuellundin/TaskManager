@@ -40,10 +40,10 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.registerCategory(categoryModel), HttpStatus.OK);
     }
 
-    /*@RequestMapping("/delete/{categoryId}")
+    @RequestMapping("/delete/{categoryId}")
     private ResponseEntity deleteCategory(@PathVariable(value="categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return new ResponseEntity(HttpStatus.OK);
-    }*/
+    }
 
 }
