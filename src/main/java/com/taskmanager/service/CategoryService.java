@@ -60,7 +60,7 @@ public class CategoryService {
                 if(task.getCategory().getCategoryId().equals(categoryId)) {
                     System.out.println("--- CATEGORY EXISTS IN TASK: " + task.getTitle() + " ---");
                     Category fallbackCategory = categoryRepository.findOne(Long.parseLong("2"));
-                    task.setCategory(fallbackCategory);  //id 2 hardcoded as "default" category
+                    task.setCategory(fallbackCategory);  //id 2 hardcoded as standard fallback category
                     System.out.println("--- NEW CATEGORY FOR THESE TASKS: " + fallbackCategory.getTitle() + "(id:" + fallbackCategory.getCategoryId() + ") ---");
                     taskService.updateTask(task);
                 }
