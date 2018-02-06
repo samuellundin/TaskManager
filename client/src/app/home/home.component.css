@@ -1,9 +1,13 @@
-.header {
-  margin-bottom: 50px;
+.container {
+  margin-top: 60px;
 }
-.tableContainer {
-  margin: auto;
-  width: 80%;
+
+.odd {
+  float: left;
+}
+
+.even {
+  float: right;
 }
 
 table {
@@ -29,4 +33,5 @@ tr:nth-child(even) {
 
 thead tr {
 }
+
 
