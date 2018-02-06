@@ -119,6 +119,14 @@ export class TasksComponent implements OnInit {
             console.log("response:");
             console.log(response);
             this.showCategoryDeleteSuccessAlert();
+
+            let categoryToRemove = document.getElementById(this.selectedCategory);
+            let select = document.getElementById("inputCategory");
+            select.removeChild(categoryToRemove);
+            /*newOption.selected = true;
+            this.selectedCategory = title;*/
+
+            this.toggleShowNewCategory();
           });
         }
       }
@@ -130,6 +138,7 @@ export class TasksComponent implements OnInit {
     let newOption = document.createElement("option");
     newOption.text = title;
     newOption.value = title;
+    newOption.id = title;
 
     let select = document.getElementById("inputCategory");
     select.appendChild(newOption);
