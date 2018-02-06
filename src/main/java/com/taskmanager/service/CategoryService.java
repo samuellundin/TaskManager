@@ -40,7 +40,14 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long categoryId) {
-        System.out.println("delete in service");
-        categoryRepository.delete(categoryId);
+        try {
+            categoryRepository.delete(categoryId);
+            System.out.println("--- DELETED CATEGORY " + categoryId + " SUCCESSFULLY ---");
+        }
+        catch(org.springframework.dao.DataIntegrityViolationException e) {
+            System.out.println("--- COULD NOT DELETE BECAUSE CATEGORY IS CONNECTED TO A TASK ---");
+            //TODO: Should return info to user, OR switch category on all connected tasks to
+            //TODO:     a fallback default category, and then try to remove category again.
+        }
     }
 }
