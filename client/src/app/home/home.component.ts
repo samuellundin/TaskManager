@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
   onChangeCategory(categoryObj) {
     console.log(categoryObj);
     this.selectedCategory = categoryObj;
-    // ... do other stuff here ...
+    // ...
   }
 
 }

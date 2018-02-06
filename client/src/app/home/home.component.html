@@ -1,25 +1,31 @@
-<div class="header">
+<div class="col-lg-8">
   <h1 class="display-4">Welcome {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
-  <p class="lead">Description...</p>
+  <p class="lead">Here, you can view your tasks based on category. Click on each task to be taken to the task view, where you can edit and change your tasks. Enjoy!</p>
 </div>
 
-<div class="col-lg-6" *ngIf="bool">
-
-    <label for="selectCategoryDiv">Task category</label>
+<div class="container" *ngIf="bool">
+    <label for="selectCategoryDiv">Choose task category</label>
     <div class="input-group mb-4" id="selectCategoryDiv">
-      <select class="form-control col-lg-6" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
+      <select class="form-control col-lg-4" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
         <option [ngValue]="category.categoryId" *ngFor="let category of categoriesByUser">{{category.title}}</option>
       </select>
       <!--{{selectedCategory | json}}-->
     </div>
-
-<div class="list-group">
-  <button type="button" class="list-group-item list-group-item-action active">
-    Category Title
-  </button>
-  <button type="button" class="list-group-item list-group-item-action" *ngFor="let name of categoriesByUser">{{name.title}}</button>
 </div>
 
+<div class="container" *ngIf="bool">
+<div class="list-group">
+  <ul class="col-lg-12">
+    <li class="list-group-item col-md-4 active odd">Task</li>
+    <li class="list-group-item col-md-4 active odd">Start date</li>
+    <li class="list-group-item col-md-4 active even">End date</li>
+    <div *ngFor="let task of tasks">
+      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.title}}</button>
+      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
+      <button type="button" class="list-group-item list-group-item-action col-md-4 even">{{task.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
+    </div>
+  </ul>
+</div>
 </div>
 
 <!--
