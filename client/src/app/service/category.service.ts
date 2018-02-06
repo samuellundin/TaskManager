@@ -17,9 +17,13 @@ export class CategoryService {
     return this.http.post(CATEGORY.baseUrl, category);
   }
 
+  getCategoryByUserId(userId: number) {
+    return this.http.get(CATEGORY.baseUrl +'/'+ userId)
+  }
+
   deleteCategory(categoryId: number) {
     console.log("delete catId " + categoryId + " in ts categoryservice");
-    return this.http.delete(CATEGORY.baseUrl + "delete/" + categoryId);
+    return this.http.delete(CATEGORY.baseUrl + "/delete/" + categoryId);
   }
 
 }

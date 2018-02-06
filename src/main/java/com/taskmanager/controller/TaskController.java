@@ -1,14 +1,12 @@
 package com.taskmanager.controller;
 
+import com.taskmanager.entity.Category;
 import com.taskmanager.model.TaskModel;
 import com.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +27,9 @@ public class TaskController {
         return new ResponseEntity<>(taskService.registerTask(taskModel), HttpStatus.OK);
     }
 
+    /*@RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
+    private ResponseEntity<List<TaskModel>> getTaskByCategoryId(@PathVariable("categoryId") Long categoryId) {
+        Category category = taskService.getTasksByCategoryId(categoryId);
+        return new ResponseEntity<>(taskService.getTasksByCategoryId(category), HttpStatus.OK);
+    }*/
 }

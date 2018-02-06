@@ -1,5 +1,6 @@
 package com.taskmanager.service;
 
+import com.taskmanager.entity.Category;
 import com.taskmanager.entity.Task;
 import com.taskmanager.model.TaskModel;
 import com.taskmanager.repository.TaskRepository;
@@ -28,4 +29,13 @@ public class TaskService {
         Task task = new Task(taskModel);
         return new TaskModel(taskRepository.saveAndFlush(task));
     }
+
+   /*public List<TaskModel> getTasksByCategoryId(Category category) {
+        List<Task> tasks = taskRepository.findAllByCategoryId(category);
+        List<TaskModel> taskModels = new ArrayList<>();
+        for (Task task : tasks) {
+            taskModels.add(new TaskModel(task, task.getCategory()));
+        }
+        return taskModels;
+    }*/
 }

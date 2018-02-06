@@ -1,66 +1,34 @@
 <div class="header">
-  <h1 class="display-4">Welcome @User!</h1>
+  <h1 class="display-4">Welcome {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
   <p class="lead">Description...</p>
+</div>
 
-  <!--<div class="userList" *ngIf="users.length">
-    <div class="user" *ngFor="let user of users">
-      {{user.firstName}}
+<div class="col-lg-6" *ngIf="bool">
+
+    <label for="selectCategoryDiv">Task category</label>
+    <div class="input-group mb-4" id="selectCategoryDiv">
+      <select class="form-control col-lg-6" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
+        <option [ngValue]="category.categoryId" *ngFor="let category of categoriesByUser">{{category.title}}</option>
+      </select>
+      <!--{{selectedCategory | json}}-->
     </div>
-  </div>-->
+
+<div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action active">
+    Category Title
+  </button>
+  <button type="button" class="list-group-item list-group-item-action" *ngFor="let name of categoriesByUser">{{name.title}}</button>
+</div>
 
 </div>
 
-
-<!--<table *ngIf="users.length">
-  <thead>
-  <th>Task</th>
-  <th>Start</th>
-  <th>End</th>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of users">
-    <td>{{user.firstName}}</td>
-    <td>{{user.lastName}}</td>
-    <td>{{user.firstName}}</td>
-  </tr>
-</tbody>
-</table>-->
+<!--
 
 <div class="tableContainer">
   <table>
-  <thead>
-  <tr>
-    <th>Title</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <th>Task</th>
-    <th>Start</th>
-    <th>End</th>
-  </tr>
-  <tr>
-    <td>Work</td>
-    <td>08:00</td>
-    <td>16:00</td>
-  </tr>
-  <tr>
-    <td>Supermarket</td>
-    <td>16:30</td>
-    <td>17.30</td>
-  </tr>
-  <tr>
-    <td>Afterwork</td>
-    <td>20:00</td>
-    <td>01:30</td>
-  </tr>
-  </tbody>
-</table>
-
-  <table>
     <thead>
     <tr>
-      <th>Title</th>
+      <th>{{categoriesByUser}}</th>
     </tr>
     </thead>
     <tbody>
@@ -86,184 +54,4 @@
     </tr>
     </tbody>
   </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+</div>-->

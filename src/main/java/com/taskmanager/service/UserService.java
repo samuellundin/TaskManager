@@ -45,12 +45,17 @@ public class UserService {
         return new UserModel(user);
     }
 
+    public User getUserByUserId(Long userId) {
+        return userRepository.findOne(userId);
+    }
+
     public User updateUser(UserModel userModel) throws DuplicateUserException {
         if(!userRepository.findOne(userModel.getUserId()).getUsername().equals(userModel.getUsername())) {
             if(userRepository.findByUsername(userModel.getUsername()) != null) {
                 throw new DuplicateUserException();
             }
         }
+        userModel.setPassword(bCryptPasswordEncoder.encode(userModel.getPassword()));
         return userRepository.save(new User(userModel));
     }
 }

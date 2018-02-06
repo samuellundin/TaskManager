@@ -23,7 +23,6 @@ export class TasksComponent implements OnInit {
   firstDateFieldIsHidden:boolean;
   secondDateFieldIsHidden:boolean;
   selectedCategory:string;
-  returnedCategory:any;
   options:any;
 
   constructor(private taskService: TaskService, private categoryService: CategoryService,
@@ -51,10 +50,11 @@ export class TasksComponent implements OnInit {
           this.userCategories.push(cat);
         }
       }
-    });
-
-    this.categoryService.getAllCategories().subscribe(categories => {
-      this.allCategories = categories;
+      this.userCategories.sort(function(a, b){
+        if(a.title < b.title) return -1;
+        if(a.title > b.title) return 1;
+        return 0;
+      })
     });
   }
 
@@ -87,17 +87,18 @@ export class TasksComponent implements OnInit {
 
       categoryList = categories;
 
-      console.log(this.selectedCategory);
-
       for(let cat of categoryList) {
         if(cat.title == this.selectedCategory) {
-          console.log("match, delete");
-          this.categoryService.deleteCategory(cat.categoryId);
+          this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
+            console.log("response:");
+            console.log(response);
+          });
         }
       }
     });
   }
 
+  // This saves category in db and puts in category selector
   addNewCategoryToSelection(title:string) {
     let newOption = document.createElement("option");
     newOption.text = title;
@@ -113,12 +114,9 @@ export class TasksComponent implements OnInit {
     let category: Category = new Category();
     category.title = this.selectedCategory;
 
-    //TODO: Nu lägger den till en dummy-user från db. Ändra till att lägga in inloggad user istället.
     category.user = this.currentUser;
       this.categoryService.registerCategory(category).subscribe(response => {
-        console.log("response:");
         console.log(response);
-        this.returnedCategory = response;
       });
 
   }

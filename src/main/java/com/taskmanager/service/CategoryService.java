@@ -1,6 +1,7 @@
 package com.taskmanager.service;
 
 import com.taskmanager.entity.Category;
+import com.taskmanager.entity.User;
 import com.taskmanager.model.CategoryModel;
 import com.taskmanager.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,29 @@ public class CategoryService {
         return categoryModels;
     }
 
+    public List<CategoryModel> getCategoriesByUseId(User user) {
+        List<Category> categories = categoryRepository.findAllByUser(user);
+        List<CategoryModel> categoryModels = new ArrayList<>();
+        for (Category category : categories) {
+            categoryModels.add(new CategoryModel(category, category.getUser()));
+        }
+        return categoryModels;
+    }
+
     public CategoryModel registerCategory(CategoryModel categoryModel) {
         Category category = new Category(categoryModel.getTitle(), categoryModel.getUser());
         return new CategoryModel(categoryRepository.saveAndFlush(category));
     }
 
     public void deleteCategory(Long categoryId) {
-        System.out.println("delete in service");
-        categoryRepository.delete(categoryId);
+        try {
+            categoryRepository.delete(categoryId);
+            System.out.println("--- DELETED CATEGORY " + categoryId + " SUCCESSFULLY ---");
+        }
+        catch(org.springframework.dao.DataIntegrityViolationException e) {
+            System.out.println("--- COULD NOT DELETE BECAUSE CATEGORY IS CONNECTED TO A TASK ---");
+            //TODO: Should return info to user, OR switch category on all connected tasks to
+            //TODO:     a fallback default category, and then try to remove category again.
+        }
     }
 }
