@@ -1,33 +1,72 @@
-<div class="col-lg-8">
+<div class="d-flex mb-2">
+  <h2 class="mr-auto p-2">Tasks</h2>
+  <select class="form-control p-2 col-5" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)"
+          name="category">
+    <option [ngValue]="0">All Categories</option>
+    <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
+  </select>
+</div>
+
+<hr>
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th scope="col">Title</th>
+    <th scope="col">Description</th>
+    <th scope="col">Start Date</th>
+    <th scope="col">End Date</th>
+    <th scope="col" class="text-center">Tools</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let task of tasksByCategory">
+    <td>{{task.title}}</td>
+    <td>{{task.description}}</td>
+    <td>{{task.startDate | date:'yyyy-MM-dd'}}</td>
+    <td>{{task.endDate | date:'yyyy-MM-dd'}}</td>
+    <td class="text-center">
+      <button type="button" class="btn btn-light">
+        <i class="fa fa-pencil"></i>
+      </button>
+      <button type="button" class="btn btn-danger" (click)="deleteTask(task)">
+        <i class="fa fa-times"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<!--<div class="col-lg-8">
   <h1 class="display-4">Welcome {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
   <p class="lead">Here, you can view your tasks based on category. Click on each task to be taken to the task view, where you can edit and change your tasks. Enjoy!</p>
-</div>
+</div>-->
 
-<div class="container" *ngIf="bool">
-    <label for="selectCategoryDiv">Choose task category</label>
-    <div class="input-group mb-4" id="selectCategoryDiv">
-      <select class="form-control col-lg-4" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
-        <option [ngValue]="category.categoryId" *ngFor="let category of categoriesByUser">{{category.title}}</option>
-      </select>
-      <!--{{selectedCategory | json}}-->
-    </div>
-</div>
-
-<div class="container" *ngIf="bool">
-<div class="list-group">
-  <ul class="col-lg-8">
-    <li class="list-group-item col-md-4 active odd">Task</li>
-    <li class="list-group-item col-md-4 active odd">Start date</li>
-    <li class="list-group-item col-md-4 active even">End date</li>
-    <div *ngFor="let task of tasks">
-      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.title}}</button>
-      <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
-      <button type="button" class="list-group-item list-group-item-action col-md-4 even">{{task.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
-    </div>
-  </ul>
-</div>
-</div>
-
+<!--<div class="container" *ngIf="currentUser">
+  <label for="selectCategoryDiv">Choose task category</label>
+  <div class="input-group mb-4" id="selectCategoryDiv">
+    <select class="form-control col-lg-4" id="selectCategory" [ngModel]="selectedCategory"
+            (ngModelChange)="onChangeCategory($event)" name="category">
+      <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
+    </select>
+    &lt;!&ndash;{{selectedCategory | json}}&ndash;&gt;
+  </div>
+  <div *ngIf="tasksByCategory" class="list-group">
+    <ul class="col-lg-8">
+      <li class="list-group-item col-md-4 active odd">Task</li>
+      <li class="list-group-item col-md-4 active odd">Start date</li>
+      <li class="list-group-item col-md-4 active even">End date</li>
+      <div *ngFor="let task of tasksByCategory">
+        <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.title}}</button>
+        <button type="button" class="list-group-item list-group-item-action col-md-4 odd">{{task.startDate |
+          date:'yyyy-MM-dd HH:mm:ss'}}
+        </button>
+        <button type="button" class="list-group-item list-group-item-action col-md-4 even">{{task.endDate |
+          date:'yyyy-MM-dd HH:mm:ss'}}
+        </button>
+      </div>
+    </ul>
+  </div>
+</div>-->
 <!--
 
 <div class="tableContainer">

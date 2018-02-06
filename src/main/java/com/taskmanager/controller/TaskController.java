@@ -1,6 +1,5 @@
 package com.taskmanager.controller;
 
-import com.taskmanager.entity.Category;
 import com.taskmanager.model.TaskModel;
 import com.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,13 @@ public class TaskController {
         return new ResponseEntity<>(taskService.registerTask(taskModel), HttpStatus.OK);
     }
 
-    /*@RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
     private ResponseEntity<List<TaskModel>> getTaskByCategoryId(@PathVariable("categoryId") Long categoryId) {
-        Category category = taskService.getTasksByCategoryId(categoryId);
-        return new ResponseEntity<>(taskService.getTasksByCategoryId(category), HttpStatus.OK);
-    }*/
+        return new ResponseEntity<>(taskService.getTasksByCategoryId(categoryId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
+    private ResponseEntity<List<TaskModel>> getTasksByUserId(@PathVariable("userId") Long userId) {
+        return new ResponseEntity<>(taskService.getTasksByUserId(userId), HttpStatus.OK);
+    }
 }

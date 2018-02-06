@@ -21,4 +21,7 @@ export class TaskService {
     return this.http.get(TASK.baseUrl +'/'+ categoryId)
   }*/
 
+  getAllTasksByUserId(userId: number) {
+    return this.http.get(TASK.baseUrl + '/user/' + userId);
+  }
 }
