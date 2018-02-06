@@ -49,18 +49,20 @@ public class CategoryService {
             categoryRepository.delete(categoryId);
             System.out.println("--- DELETED CATEGORY " + categoryId + " SUCCESSFULLY ---");
         }
+
+        /* If category is already connected to tasks, these tasks will have their category changed to
+           a fallback 'standard' category and then chosen category will be deleted once its freed */
         catch(org.springframework.dao.DataIntegrityViolationException e) {
             System.out.println("--- COULD NOT DELETE BECAUSE CATEGORY IS CONNECTED TO A TASK ---");
 
             List<TaskModel> tasks = taskService.getAllTasks();
-            System.out.println(tasks);
 
-            //Sets all tasks with categoryId to default fallback category
             for(TaskModel task: tasks) {
                 if(task.getCategory().getCategoryId().equals(categoryId)) {
-                    System.out.println("--- Category exists in task: " + task.getTitle() + " ---");
-                    task.setCategory(categoryRepository.findOne(Long.parseLong("2")));  //id 2 hardcoded as "default" category
-                    System.out.println("--- New category for these tasks: " + categoryRepository.findOne(Long.parseLong("2")).getTitle() + " ---");
+                    System.out.println("--- CATEGORY EXISTS IN TASK: " + task.getTitle() + " ---");
+                    Category fallbackCategory = categoryRepository.findOne(Long.parseLong("2"));
+                    task.setCategory(fallbackCategory);  //id 2 hardcoded as "default" category
+                    System.out.println("--- NEW CATEGORY FOR THESE TASKS: " + fallbackCategory.getTitle() + "(id:" + fallbackCategory.getCategoryId() + ") ---");
                     taskService.updateTask(task);
                 }
             }
