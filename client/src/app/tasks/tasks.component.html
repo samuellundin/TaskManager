@@ -48,9 +48,12 @@
         <option *ngFor="let category of userCategories" value="{{category.title}}">{{category.title}}</option>
       </select>
       <button class="btn btn-sm btn-outline-danger ml-1" type="button" (click)="deleteCategory()">Delete this category</button>
-      <button (click)="toggleNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
+      <button (click)="toggleShowNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
     </div>
-    <div class="alert alert-danger" [hidden]="categoryDeleteAlertIsHidden">
+    <div class="alert alert-success" [hidden]="categoryDeleteSuccessIsHidden">
+      <strong>Category deleted!</strong> If some task were using the category, those tasks are now assigned to Standard category
+    </div>
+    <div class="alert alert-danger" [hidden]="categoryDeleteFailIsHidden">
       <strong>Cannot delete!</strong> This is a standard fallback category and cannot be deleted.
     </div>
 
