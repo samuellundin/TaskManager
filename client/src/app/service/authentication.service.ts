@@ -3,7 +3,8 @@ import {LOGIN, REGISTER} from "./api.urls";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import {User} from "../model/user";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import 'rxjs/add/observable/throw';
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
@@ -23,22 +24,24 @@ export class AuthenticationService {
               private userService: UserService,
               private http: HttpClient) {}
 
-  registerUser(user: User) {
-    return this.http.post(REGISTER.baseUrl, user).subscribe(response => {
+  registerUser(user: User): Observable<any> {
+    return this.http.post(REGISTER.baseUrl, user).map(response => {
       this.router.navigate(['/home']);
+    }).catch((error: any) => {
+      return Observable.throw(error);
     });
   }
 
-  login(user: User) {
-    return this.http.post(LOGIN.baseUrl, user, { observe: 'response' }).subscribe(response => {
+  login(user: User): Observable<any> {
+    return this.http.post(LOGIN.baseUrl, user, { observe: 'response' }).map(response => {
       localStorage.setItem(JWT_TOKEN, response.headers.get('authorization'));
       this.userService.getByUsername(user.username).subscribe((data: User) => {
         localStorage.setItem(CURRENT_USER, JSON.stringify(data));
         this.setAuthenticatedUser(data);
         this.router.navigate(['/home']);
       });
-    }, error => {
-      console.log(error.message);
+    }).catch((error: any) => {
+      return Observable.throw(error);
     });
   }
 

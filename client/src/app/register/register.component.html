@@ -44,7 +44,9 @@
         <div>Password does not match</div>
       </div>
     </div>
-
+    <div *ngIf="usernameTaken" class="alert alert-danger">
+      <div>Username already taken</div>
+    </div>
     <div class="form-group">
       <button class="btn btn-primary btn-block" [disabled]="!f.valid || !passwordMatch()">Register</button>
     </div>

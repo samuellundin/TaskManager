@@ -7,7 +7,7 @@
       {{currentUser.username}}
     </div>
     <div class="mb-3" *ngIf="updatingUser">
-      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.username" #username="ngModel" name="username">
+      <input type="text" class="form-control profile-field" [(ngModel)]="model.username" #username="ngModel" name="username" required>
     </div>
 
     <label>First name:</label>
@@ -15,7 +15,7 @@
       {{currentUser.firstName}}
     </div>
     <div class="mb-3" *ngIf="updatingUser">
-      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.firstName" #firstName="ngModel" name="firstName">
+      <input type="text" class="form-control profile-field" [(ngModel)]="model.firstName" #firstName="ngModel" name="firstName" required>
     </div>
 
     <label>Last name:</label>
@@ -23,22 +23,22 @@
       {{currentUser.lastName}}
     </div>
     <div class="mb-3" *ngIf="updatingUser">
-      <input type="text" class="form-control profile-field" [(ngModel)]="currentUser.lastName" #lastName="ngModel" name="lastName">
+      <input type="text" class="form-control profile-field" [(ngModel)]="model.lastName" #lastName="ngModel" name="lastName" required>
     </div>
 
     <div class="mb-3" *ngIf="updatingUser">
       <label>New Password:</label>
-      <input type="password" class="form-control profile-field" [(ngModel)]="password.newPassword" #newPassword="ngModel" name="newPassword">
+      <input type="password" class="form-control profile-field" [(ngModel)]="model.password" #password="ngModel" name="password" required>
     </div>
     <div class="mb-4" *ngIf="updatingUser">
       <label>Confirm Password:</label>
-      <input type="password" class="form-control profile-field" [(ngModel)]="password.confirmNewPassword" #confirmNewPassword="ngModel" name="confirmNewPassword">
+      <input type="password" class="form-control profile-field" [(ngModel)]="model.confirmNewPassword" #confirmNewPassword="ngModel" name="confirmNewPassword" required>
     </div>
   </form>
   <hr class="mb-4">
   <div class="text-right">
     <button *ngIf="updatingUser" type="button" class="btn btn-danger" (click)="cancelUpdateUser()">Cancel</button>
-    <button *ngIf="updatingUser" type="button" class="btn btn-success ml-1" (click)="saveUpdatedUser()">Save</button>
+    <button *ngIf="updatingUser" type="button" class="btn btn-success ml-1" [disabled]="!f.valid" (click)="saveUpdatedUser()">Save</button>
     <button *ngIf="!updatingUser" type="button" class="btn btn-primary ml-1" (click)="handleUpdateUser()">Update</button>
   </div>
 </div>
