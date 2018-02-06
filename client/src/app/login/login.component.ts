@@ -9,6 +9,7 @@ import {AuthenticationService} from "../service/authentication.service";
 export class LoginComponent implements OnInit {
 
   model: any = {};
+  unauthorized: boolean = false;
 
   constructor(private authenticationService: AuthenticationService) {}
 
@@ -18,7 +19,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     console.log(this.model);
-    this.authenticationService.login(this.model);
+    this.authenticationService.login(this.model).subscribe(data => {
+      console.log(data);
+    }, error => {
+      this.unauthorized = true;
+    });
   }
 
 }

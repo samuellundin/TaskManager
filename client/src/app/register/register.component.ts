@@ -10,6 +10,7 @@ import {User} from "../model/user";
 export class RegisterComponent implements OnInit {
 
   model: any = {};
+  usernameTaken: boolean = false;
 
   constructor(private authenticationService: AuthenticationService) {}
 
@@ -18,10 +19,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    console.log(this.model);
-    this.authenticationService.registerUser(this.model);
+    this.authenticationService.registerUser(this.model).subscribe(data => {
 
-
+    }, error => {
+      this.usernameTaken = true;
+    });
   }
 
   passwordMatch(): boolean {
