@@ -21,7 +21,8 @@ export class TasksComponent implements OnInit {
   newCategoryIsHidden:boolean;
   firstDateFieldIsHidden:boolean;
   secondDateFieldIsHidden:boolean;
-  categoryDeleteAlertIsHidden:boolean;
+  categoryDeleteFailIsHidden:boolean;
+  categoryDeleteSuccessIsHidden:boolean;
 
   selectedCategory:string;
   options:any;
@@ -37,7 +38,8 @@ export class TasksComponent implements OnInit {
     this.newCategoryIsHidden = true;
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
-    this.categoryDeleteAlertIsHidden = true;
+    this.categoryDeleteFailIsHidden = true;
+    this.categoryDeleteSuccessIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -60,43 +62,48 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  //Date selector
   showNoDateOption() {
     this.firstDateFieldIsHidden = true;
     this.secondDateFieldIsHidden = true;
     this.options = 0;
   }
-
   showOneDateOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = true;
     this.options = 1;
   }
-
   showTwoDatesOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = false;
     this.options = 2;
   }
 
-  showCategoryDeleteAlert() {
-    this.categoryDeleteAlertIsHidden = false;
-    console.log("shown");
+  // Category delete alerts
+  showCategoryDeleteFailAlert() {
+    this.categoryDeleteFailIsHidden = false;
     setTimeout(() =>
       {
-        this.hideCategoryDeleteAlert();
+        this.hideCategoryDeleteFailAlert();
       },
       3500);
   }
-
-  hideCategoryDeleteAlert() {
-    this.categoryDeleteAlertIsHidden = true;
-    console.log("hidden");
+  hideCategoryDeleteFailAlert() { this.categoryDeleteFailIsHidden = true; }
+  showCategoryDeleteSuccessAlert() {
+    this.categoryDeleteSuccessIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideCategoryDeleteSuccessAlert();
+      },
+      3500);
   }
+  hideCategoryDeleteSuccessAlert() { this.categoryDeleteSuccessIsHidden = true; }
 
-  toggleNewCategory() {
+  toggleShowNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
 
+  //TODO: Fix so that deleted category also immediately is removed from selector
   deleteCategory(){
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
@@ -105,12 +112,13 @@ export class TasksComponent implements OnInit {
 
       for(let cat of categoryList) {
         if(this.selectedCategory == 'Standard') {
-          this.showCategoryDeleteAlert();
+          this.showCategoryDeleteFailAlert();
         }
         else if(cat.title == this.selectedCategory) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
             console.log("response:");
             console.log(response);
+            this.showCategoryDeleteSuccessAlert();
           });
         }
       }
@@ -128,7 +136,7 @@ export class TasksComponent implements OnInit {
     newOption.selected = true;
     this.selectedCategory = title;
 
-    this.toggleNewCategory();
+    this.toggleShowNewCategory();
 
     let category: Category = new Category();
     category.title = this.selectedCategory;
