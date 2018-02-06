@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
 
   bool: any;
 
+  startDate: any;
+  endDate: any;
+
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
               private userService: UserService,
@@ -63,6 +66,11 @@ export class HomeComponent implements OnInit {
 
     this.taskService.getAllTasks().subscribe(tasks => {
       this.tasks = tasks;
+
+      for(let task of this.tasks) {
+        task.startDate = new Date(task.startDate * 1000);
+        task.endDate = new Date(task.endDate * 1000);
+      }
     });
 
   }
