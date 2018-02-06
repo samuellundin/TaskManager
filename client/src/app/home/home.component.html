@@ -3,15 +3,22 @@
   <p class="lead">Description...</p>
 </div>
 
-<div class="col-lg-6">
+<div class="col-lg-6" *ngIf="bool">
 
-    <label for="selectCategoryDiv">Choose task category:</label>
+    <label for="selectCategoryDiv">Task category</label>
     <div class="input-group mb-4" id="selectCategoryDiv">
       <select class="form-control col-lg-6" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
         <option [ngValue]="category.categoryId" *ngFor="let category of categoriesByUser">{{category.title}}</option>
       </select>
       <!--{{selectedCategory | json}}-->
     </div>
+
+<div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action active">
+    Category Title
+  </button>
+  <button type="button" class="list-group-item list-group-item-action" *ngFor="let name of categoriesByUser">{{name.title}}</button>
+</div>
 
 </div>
 

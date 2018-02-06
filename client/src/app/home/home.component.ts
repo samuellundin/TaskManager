@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
 
   tasksByCategoryId: any;
 
+  bool: any;
+
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
               private userService: UserService,
@@ -30,7 +32,14 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      console.log("currentUser: " + currentUser.userId + ", " + currentUser.firstName);
+
+      if(this.currentUser.id == null || "") {
+        this.bool = true;
+      } else {
+        this.bool = false;
+        console.log("currentUser: " + currentUser.userId + ", " + currentUser.firstName);
+      }
+
     });
 
     this.categoryService.getCategoryByUserId(this.currentUser.userId).subscribe(categoriesByUser => {
