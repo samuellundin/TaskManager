@@ -1,70 +1,8 @@
-.container {
-  margin-top: 60px;
+.d-flex {
+  align-items: center;
 }
-
-.odd {
-  float: left;
-}
-
-.even {
-  float: right;
-}
-
-.control:hover ~ .target {
-  background: whitesmoke;
-}
-
-button:focus {
-  outline: none;
-}
-
-.badge {
-  padding: 1px 9px 2px;
-  font-size: 12.025px;
-  font-weight: bold;
-  white-space: nowrap;
-  color: #ffffff;
-  background-color: #999999;
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
-  border-radius: 9px;
-}
-.badge:hover {
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.badge-inverse {
-  background-color: #333333;
-  float: right;
-}
-.badge-inverse:hover {
-  background-color: #1a1a1a;
-}
-
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 15%;
-  display: inline-block;
-  margin-left: 60px;
-  margin-right: 60px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-thead tr {
+h2 {
+  margin-bottom: 0;
 }
 
 

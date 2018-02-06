@@ -2,7 +2,7 @@ package com.taskmanager.service;
 
 import com.taskmanager.entity.Category;
 import com.taskmanager.entity.Task;
-import com.taskmanager.exception.DuplicateUserException;
+import com.taskmanager.entity.User;
 import com.taskmanager.model.TaskModel;
 import com.taskmanager.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,16 @@ import java.util.List;
 @Service
 public class TaskService {
 
+    private final TaskRepository taskRepository;
+    private final CategoryService categoryService;
+    private final UserService userService;
+
     @Autowired
-    private TaskRepository taskRepository;
+    public TaskService(TaskRepository taskRepository, CategoryService categoryService, UserService userService) {
+        this.taskRepository = taskRepository;
+        this.categoryService = categoryService;
+        this.userService = userService;
+    }
 
     public List<TaskModel> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
@@ -38,12 +46,22 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-   /*public List<TaskModel> getTasksByCategoryId(Category category) {
-        List<Task> tasks = taskRepository.findAllByCategoryId(category);
+   public List<TaskModel> getTasksByCategoryId(Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        List<Task> tasks = taskRepository.findAllByCategory(category);
         List<TaskModel> taskModels = new ArrayList<>();
         for (Task task : tasks) {
-            taskModels.add(new TaskModel(task, task.getCategory()));
+            taskModels.add(new TaskModel(task));
         }
         return taskModels;
-    }*/
+    }
+
+    public List<TaskModel> getTasksByUserId(Long userId) {
+        User user = userService.getUserByUserId(userId);
+        List<TaskModel> taskModels = new ArrayList<>();
+        for(Task task: taskRepository.findAllByUser(user)) {
+            taskModels.add(new TaskModel(task));
+        }
+        return taskModels;
+    }
 }

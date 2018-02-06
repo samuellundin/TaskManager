@@ -1,6 +1,5 @@
 package com.taskmanager.service;
 
-import com.taskmanager.controller.TaskController;
 import com.taskmanager.entity.Category;
 import com.taskmanager.entity.User;
 import com.taskmanager.model.CategoryModel;
@@ -68,5 +67,9 @@ public class CategoryService {
             }
             deleteCategory(categoryId);
         }
+    }
+
+    public Category getCategoryById(Long categoryId) {
+        return categoryRepository.findOne(categoryId);
     }
 }

@@ -3,6 +3,8 @@ import {UserService} from "../service/user.service";
 import {CategoryService} from "../service/category.service";
 import {TaskService} from "../service/task.service";
 import {AuthenticationService} from "../service/authentication.service";
+import {Category} from "../model/category";
+import {Task} from '../model/task';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +16,13 @@ export class HomeComponent implements OnInit {
 
   currentUser: any;
   categoriesByUser: any;
-  categories: any;
+  categories: any[] = [];
   users: any;
-  tasks: any;
+  tasks: Task[];
+  tasksByCategory: Task[];
+  taskToDelete: any;
 
-  selectedCategory: any;
+  selectedCategory: number = 0;
 
   tasksByCategoryId: any;
 
@@ -35,31 +39,33 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-
-      if(this.currentUser.id == null || "") {
-        this.bool = true;
-      } else {
-        this.bool = false;
-        console.log("currentUser: " + currentUser.userId + ", " + currentUser.firstName);
+      if(this.currentUser) {
+        this.taskService.getAllTasksByUserId(this.currentUser.userId).subscribe((tasks: Task[]) => {
+          this.tasks = tasks;
+          this.tasksByCategory = tasks;
+        });
+        this.categoryService.getCategoryByUserId(this.currentUser.userId).subscribe((categories: Category[]) => {
+          let category = new Category();
+          category.categoryId = 0;
+          category.title = "All Categories";
+          category.user = this.currentUser;
+          this.categories.push();
+          categories.forEach(cat => {
+            this.categories.push(cat);
+          });
+          console.log(this.categories)
+        });
       }
-
     });
 
-    this.categoryService.getCategoryByUserId(this.currentUser.userId).subscribe(categoriesByUser => {
-      this.categoriesByUser = categoriesByUser;
-      console.log(categoriesByUser);
-    });
 
     /*this.taskService.getTaskByCategoryId(this.selectedCategory).subscribe(tasksByCategoryId => {
       this.tasksByCategoryId = tasksByCategoryId;
       console.log(tasksByCategoryId);
     });*/
 
-    this.categoryService.getAllCategories().subscribe(categories => {
-      this.categories = categories;
-    });
 
-    this.userService.getAllUsers().subscribe(users => {
+    /*this.userService.getAllUsers().subscribe(users => {
       this.users = users;
       console.log(users)
     });
@@ -71,15 +77,21 @@ export class HomeComponent implements OnInit {
         task.startDate = new Date(task.startDate * 1000);
         task.endDate = new Date(task.endDate * 1000);
       }
-    });
+    });*/
 
   }
 
+  deleteTask(task) {
+    this.taskToDelete = task;
+  }
+
   //get selected category
-  onChangeCategory(categoryObj) {
-    console.log(categoryObj);
-    this.selectedCategory = categoryObj;
-    // ...
+  onChangeCategory(categoryId: number) {
+    if(categoryId == 0) {
+      this.tasksByCategory = this.tasks;
+    } else {
+      this.tasksByCategory = this.tasks.filter((task) => task.category.categoryId == categoryId);
+    }
   }
 
 }
