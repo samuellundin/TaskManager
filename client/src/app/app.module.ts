@@ -21,6 +21,9 @@ import {AuthenticationService} from "./service/authentication.service";
 import {AuthenticationInterceptor} from "./security/authentication.interceptor";
 import {AuthenticationGuard} from "./security/authentication.guard";
 
+import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +34,8 @@ import {AuthenticationGuard} from "./security/authentication.guard";
     TasksComponent,
     LoginComponent,
     ProfileComponent,
-    AboutComponent
+    AboutComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -48,3 +52,5 @@ import {AuthenticationGuard} from "./security/authentication.guard";
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);
