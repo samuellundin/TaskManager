@@ -16,14 +16,14 @@ export class HomeComponent implements OnInit {
 
   currentUser: any;
   categories: any[] = [];
-  tasks: Task[];
+  tasks: any[];
   tasksByCategory: Task[];
   selectedTask: any = {};
   selectedCategory: number = 0;
   startDate: any;
   endDate: any;
 
-  selectedTask: any;
+  //selectedTask: any;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -37,6 +37,12 @@ export class HomeComponent implements OnInit {
       if (this.currentUser) {
         this.taskService.getAllTasksByUserId(this.currentUser.userId).subscribe((tasks: Task[]) => {
           this.tasks = tasks;
+
+          for(let task of this.tasks) {
+            task.startDate = new Date(task.startDate * 1000);
+            task.endDate = new Date(task.endDate * 1000);
+          }
+
           this.tasksByCategory = tasks;
         });
         this.categoryService.getCategoryByUserId(this.currentUser.userId).subscribe((categories: Category[]) => {
