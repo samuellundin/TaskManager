@@ -35,4 +35,10 @@ public class TaskController {
     private ResponseEntity<List<TaskModel>> getTasksByUserId(@PathVariable("userId") Long userId) {
         return new ResponseEntity<>(taskService.getTasksByUserId(userId), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.DELETE)
+    private ResponseEntity deleteTask(@PathVariable("taskId") Long taskId) {
+        taskService.deleteTask(taskId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

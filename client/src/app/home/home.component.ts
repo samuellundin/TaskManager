@@ -15,31 +15,26 @@ import {Task} from '../model/task';
 export class HomeComponent implements OnInit {
 
   currentUser: any;
-  categoriesByUser: any;
   categories: any[] = [];
-  users: any;
   tasks: Task[];
   tasksByCategory: Task[];
-  taskToDelete: any;
-
+  selectedTask: any = {};
   selectedCategory: number = 0;
-
-  tasksByCategoryId: any;
-
-  bool: any;
-
   startDate: any;
   endDate: any;
+
+  selectedTask: any;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
               private userService: UserService,
-              private taskService: TaskService) {}
+              private taskService: TaskService) {
+  }
 
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      if(this.currentUser) {
+      if (this.currentUser) {
         this.taskService.getAllTasksByUserId(this.currentUser.userId).subscribe((tasks: Task[]) => {
           this.tasks = tasks;
           this.tasksByCategory = tasks;
@@ -53,45 +48,43 @@ export class HomeComponent implements OnInit {
           categories.forEach(cat => {
             this.categories.push(cat);
           });
-          console.log(this.categories)
         });
       }
     });
+  }
 
-
-    /*this.taskService.getTaskByCategoryId(this.selectedCategory).subscribe(tasksByCategoryId => {
-      this.tasksByCategoryId = tasksByCategoryId;
-      console.log(tasksByCategoryId);
-    });*/
-
-
-    /*this.userService.getAllUsers().subscribe(users => {
-      this.users = users;
-      console.log(users)
+  deleteTask() {
+    this.taskService.deleteTask(this.selectedTask.taskId).subscribe(() => {
+      let index = this.tasks.findIndex(task => this.selectedTask.taskId == task.taskId);
+      this.tasks.splice(index, 1);
+      this.onChangeCategory(this.selectedCategory);
+      this.selectedTask = {};
     });
-
-    this.taskService.getAllTasks().subscribe(tasks => {
-      this.tasks = tasks;
-
-      for(let task of this.tasks) {
-        task.startDate = new Date(task.startDate * 1000);
-        task.endDate = new Date(task.endDate * 1000);
-      }
-    });*/
-
   }
 
-  deleteTask(task) {
-    this.taskToDelete = task;
+  deleteModal(task) {
+    this.selectedTask = task;
   }
 
-  //get selected category
   onChangeCategory(categoryId: number) {
-    if(categoryId == 0) {
+    this.selectedCategory = categoryId;
+    if (this.selectedCategory == 0) {
       this.tasksByCategory = this.tasks;
     } else {
       this.tasksByCategory = this.tasks.filter((task) => task.category.categoryId == categoryId);
     }
+  }
+
+  toggle(event) {
+    console.log(event.target);
+    this.selectedTask = event.target;
+  }
+
+  //get selected category
+  onChangeTask(taskId) {
+    console.log(taskId);
+    this.selectedTask = taskId;
+    // ...
   }
 
 }

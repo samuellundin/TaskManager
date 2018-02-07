@@ -24,4 +24,8 @@ export class TaskService {
   getAllTasksByUserId(userId: number) {
     return this.http.get(TASK.baseUrl + '/user/' + userId);
   }
+
+  deleteTask(taskId: number) {
+    return this.http.delete(TASK.baseUrl + '/' + taskId);
+  }
 }
