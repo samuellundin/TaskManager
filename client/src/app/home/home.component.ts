@@ -23,7 +23,10 @@ export class HomeComponent implements OnInit {
   startDate: any;
   endDate: any;
 
-  //selectedTask: any;
+  idFailAlertIsHidden: boolean;
+  taskSavedAlertIsHidden: boolean;
+  titleInputFailAlertIsHidden: boolean;
+  categoryInputFailAlertIsHidden: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -57,6 +60,12 @@ export class HomeComponent implements OnInit {
         });
       }
     });
+
+    this.idFailAlertIsHidden = true;
+    this.taskSavedAlertIsHidden = true;
+    this.titleInputFailAlertIsHidden = true;
+    this.categoryInputFailAlertIsHidden = true;
+
   }
 
   deleteTask() {
@@ -72,6 +81,10 @@ export class HomeComponent implements OnInit {
     this.selectedTask = task;
   }
 
+  editModal(task) {
+    this.selectedTask = task;
+  }
+
   onChangeCategory(categoryId: number) {
     this.selectedCategory = categoryId;
     if (this.selectedCategory == 0) {
@@ -81,50 +94,99 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  toggle(event) {
-    console.log(event.target);
-    this.selectedTask = event.target;
+  showIdFailAlert() {
+    this.idFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideIdFailAlert();
+      },
+      3500);
   }
+  hideIdFailAlert() { this.idFailAlertIsHidden = true }
 
-  //get selected category
-  onChangeTask(taskId) {
-    console.log(taskId);
-    this.selectedTask = taskId;
-    // ...
+  showTaskSavedAlert() {
+    this.taskSavedAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTaskSavedAlert();
+      },
+      3500);
   }
+  hideTaskSavedAlert() { this.taskSavedAlertIsHidden = true }
 
+  showTitleInputFailAlert() {
+    this.titleInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTitleInputFailAlert();
+      },
+      3500);
+  }
+  hideTitleInputFailAlert() { this.titleInputFailAlertIsHidden = true }
+
+  showCategoryInputFailAlert() {
+    this.categoryInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideCategoryInputFailAlert();
+      },
+      3500);
+  }
+  hideCategoryInputFailAlert() { this.categoryInputFailAlertIsHidden = true }
+
+  onSubmit(form: any): void {
+    let task: Task = new Task();
+
+    console.log(form);
+
+    if(this.selectedTask.taskId == null) {
+      this.showIdFailAlert();
+    } else if(this.currentUser.userId == null) {
+      this.showIdFailAlert();
+    } else {
+    task.user = this.currentUser;
+    task.taskId = this.selectedTask.taskId;
+    }
+
+    if((form.startDate == "" && form.endDate == "")) {
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(Date.now());
+    } else if (form.endDate == ""){
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
+    } else if (form.startDate == ""){
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    } else {
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    }
+
+    if(form.title == "") {
+      this.showTitleInputFailAlert();
+    } else if(form.category == "") {
+      this.showCategoryInputFailAlert();
+    } else {
+      task.title = form.title;
+      task.description = form.description;
+    }
+
+      this.categoryService.getAllCategories().subscribe(categories => {
+        let categoryObj:any;
+
+        categoryObj = categories;
+
+        for(let category of categoryObj) {
+          if(category.title == this.selectedCategory) {
+            task.category = category;
+          }
+        }
+
+        this.taskService.updateTask(task).subscribe(response => {
+          console.log(response);
+          this.showTaskSavedAlert();
+        });
+      });
+
+  }
 }
-
-
-/*this.taskStartDates = moment(this.tasks.startDate).format('YYYY-MM-DD');
-      this.taskEndDates = moment(this.tasks.endDate).format('YYYY-MM-DD');
-      console.log(Object.values(tasks));
-    });
-
-this.categories.forEach(item => {
-        if(item.user.userId == this.currentUser.userId) {
-       //console.log("UserId: "+item.user.userId);
-       //console.log(this.categoryTitles + " belongs to " + this.currentUser.firstName);
-       });
-
-for(let i in categories) {
-  if(categories[i].userId == 11)
-    console.log("true");
-else
-  console.log("false");
-
-for(let i in categories) {
-  if(categories[i].userId == 3)
-    console.log("Id is :"+ parseInt(i));
-}
-
-for(let i in categories) {
-  if(categories[this.categoryIndex].title == "Mother, Jugs & Speed")
-    console.log("Index is :"+ parseInt(this.categoryIndex));
-}
-
-this.categories.forEach(item => {
-  if(item.categoryId == 2)
-    this.categoryTitles = item.title;
-  console.log("title is: " + item.title);
-});*/

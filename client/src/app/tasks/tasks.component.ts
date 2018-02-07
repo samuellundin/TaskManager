@@ -202,53 +202,53 @@ export class TasksComponent implements OnInit {
   }
 
   onSubmit(form: any): void {
-    let task: Task = new Task();
+  let task: Task = new Task();
 
-    task.user = this.currentUser;
-    task.description = form.description;
-    /*
-    If starttime set but endtime null -> endtime = starttime
-    If starttime null but endtime set -> starttime = now()
-    If neither set -> both now()
-     */
-    if((form.startDate == "" && form.endDate == "")) {
-      task.startDate = new Date(Date.now());
-      task.endDate = new Date(Date.now());
-    } else if (form.endDate == ""){
-      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-      task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
-    } else if (form.startDate == ""){
-      task.startDate = new Date(Date.now());
-      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
-    } else {
-      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+task.user = this.currentUser;
+task.description = form.description;
+/*
+If starttime set but endtime null -> endtime = starttime
+If starttime null but endtime set -> starttime = now()
+If neither set -> both now()
+ */
+if((form.startDate == "" && form.endDate == "")) {
+  task.startDate = new Date(Date.now());
+  task.endDate = new Date(Date.now());
+} else if (form.endDate == ""){
+  task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+  task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
+} else if (form.startDate == ""){
+  task.startDate = new Date(Date.now());
+  task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+} else {
+  task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+  task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+}
+
+if(form.title == "") {
+  this.showTitleInputFailAlert();
+} else if(!this.selectedCategory) {
+  this.showCategoryInputFailAlert();
+} else {
+  task.title = form.title;
+  this.categoryService.getAllCategories().subscribe(categories => {
+    let categoryList:any;
+
+    categoryList = categories;
+
+    for(let cat of categoryList) {
+      if(cat.title == this.selectedCategory) {
+        task.category = cat;
+      }
     }
 
-    if(form.title == "") {
-      this.showTitleInputFailAlert();
-    } else if(!this.selectedCategory) {
-      this.showCategoryInputFailAlert();
-    } else {
-      task.title = form.title;
-      this.categoryService.getAllCategories().subscribe(categories => {
-        let categoryList:any;
-
-        categoryList = categories;
-
-        for(let cat of categoryList) {
-          if(cat.title == this.selectedCategory) {
-            task.category = cat;
-          }
-        }
-
-        this.taskService.registerTask(task).subscribe(response => {
-          console.log(response);
-          this.showTaskSavedAlert();
-        });
-      });
-    }
+    this.taskService.registerTask(task).subscribe(response => {
+      console.log(response);
+      this.showTaskSavedAlert();
+    });
+  });
+}
 
 
-  }
+}
 }

@@ -41,9 +41,8 @@ public class TaskService {
 
     public Task updateTask(TaskModel taskModel) {
         Task task = taskRepository.findOne(taskModel.getTaskId());
-
         task.setCategory(taskModel.getCategory());
-        return taskRepository.save(task);
+        return taskRepository.saveAndFlush(task);
     }
 
    public List<TaskModel> getTasksByCategoryId(Long categoryId) {
@@ -68,4 +67,5 @@ public class TaskService {
     public void deleteTask(Long taskId) {
         taskRepository.delete(taskId);
     }
+
 }

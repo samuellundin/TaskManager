@@ -25,7 +25,7 @@
     <td>{{task.startDate | date:'yyyy-MM-dd HH:mm'}}</td>
     <td>{{task.endDate | date:'yyyy-MM-dd HH:mm'}}</td>
     <td class="text-center">
-      <button type="button" class="btn btn-light">
+      <button type="button" class="btn btn-light" data-toggle="modal" data-target="#editModal" (click)="editModal(task)">
         <i class="fa fa-pencil"></i>
       </button>
       <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" (click)="deleteModal(task)">
@@ -36,7 +36,15 @@
   </tbody>
 </table>
 
-<!--Modal -->
+{{form1}}
+{{form2}}
+{{form3}}
+{{form4}}
+{{form5}}
+{{form6}}
+{{form7}}
+
+<!--Modal delete-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -57,116 +65,71 @@
       </div>
     </div>
   </div>
-</div><!--<div class="col-lg-8">
-  <h1 class="display-4">Welcome {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
-  <p class="lead">Here, you can view your tasks based on category. Click on each task to be taken to the task view, where you can edit or complete any existing task. Enjoy!</p>
 </div>
 
-<div class="container" *ngIf="bool">
-    <label for="selectCategoryDiv">Choose task category</label>
-    <div class="input-group mb-4" id="selectCategoryDiv">
-      <select class="form-control col-lg-4" id="selectCategory" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)" name="category">
-        <option [ngValue]="category.categoryId" *ngFor="let category of categoriesByUser">{{category.title}}</option>
-      </select>
-      {{selectedCategory | json}}
-    </div>
-</div>
-
-<div class="container" *ngIf="bool">
-<div class="list-group">
-  <ul class="col-lg-8">
-    <li href="#myModal" class="list-group-item col-md-4 active odd">Task</li>
-    <li class="list-group-item col-md-4 active odd">Start date</li>
-    <li class="list-group-item col-md-4 active even">End date</li>
-    <div class="parent" *ngFor="let task of tasks">
-      <button type="button" data-toggle="modal" (click)="toggle($event)" id="1" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 control odd">{{task.title}}</button>
-      <button type="button" data-toggle="modal" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 target odd">{{task.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
-      <button type="button" data-toggle="modal" data-target="#editModal" class="list-group-item list-group-item-action col-md-4 target even">{{task.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</button>
-      <span class="badge badge-inverse" data-toggle="modal" data-target="#editModal">Edit</span>
-    </div>
-  </ul>
-</div>
-</div>
-
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<!--Modal edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle2">Edit task '{{selectedTask.title}}'</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
+      <div class="modal-body">
+        <div class="alert alert-danger" [hidden]="idFailAlertIsHidden">
+          <strong>Something went wrong!</strong>
         </div>
-        <div class="modal-body">
-
-          <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
-            <div class="form-group">
-              <label for="inputTaskTitle">Title:</label>
-              <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Edit task title" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="inputDescription">Description:</label>
-              <textarea class="form-control" rows="5" id="inputDescription" name="description" placeholder="Edit description of the task" ngModel></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-check-label" for="inputStartDate">
-                Start date
-              </label>
-              <div class="input-group" id="inputStartDate">
-                <input type="date" class="form-control" name="startDate" placeholder="Starting date" ngModel>
-                <input type="time" class="form-control" name="startTime" placeholder="Starting time" ngModel>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-check-label" for="inputEndDate">
-                End date
-              </label>
-              <div class="input-group" id="inputEndDate">
-                <input type="date" class="form-control" name="endDate" placeholder="Ending date" ngModel>
-                <input type="time" class="form-control" name="endTime" placeholder="Ending time" ngModel>
-              </div>
-            </div>
-
-          </form>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-control" name="title" value="{{selectedTask.title}}" ngModel>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
+          <strong>Required field!</strong>
+        </div>
+
+        <div class="form-group">
+          <label>Description:</label>
+          <textarea class="form-control" rows="5" name="description" value="{{selectedTask.description}}" ngModel></textarea>
+        </div>
+
+        <div class="mt-3">
+          <label>Start date</label>
+          <div class="input-group" id="inputStartDate">
+            <input type="date" class="form-control" name="startDate" value="{{selectedTask.startDate}}" ngModel>
+            <input type="time" class="form-control" name="startTime" value="{{selectedTask.startDate}}" ngModel>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label>End date</label>
+          <div class="input-group" id="inputEndDate">
+            <input type="date" class="form-control" name="endDate" placeholder="" ngModel>
+            <input type="time" class="form-control" name="endTime" placeholder="" ngModel>
+          </div>
+        </div>
+
+        <label class="mt-3">Choose category:</label>
+        <div class="input-group mb-4" id="inputCategoryDiv">
+          <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
+            <option *ngFor="let category of categories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
+          </select>
+        </div>
+        <div class="alert alert-danger" [hidden]="categoryInputFailAlertIsHidden">
+          <strong>Required field!</strong>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button [disabled]="!taskForm.dirty" type="submit" class="btn btn-primary">Edit task</button>
+        <div class="alert alert-success mt-2" [hidden]="taskSavedAlertIsHidden">
+          <strong>Task edited!</strong>
         </div>
       </div>
+      </form>
     </div>
   </div>
-
-<div class="tableContainer">
-  <table>
-    <thead>
-    <tr>
-      <th>{{categoriesByUser}}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>Task</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-    <tr>
-      <td>Work</td>
-      <td>08:00</td>
-      <td>16:00</td>
-    </tr>
-    <tr>
-      <td>Supermarket</td>
-      <td>16:30</td>
-      <td>17.30</td>
-    </tr>
-    <tr>
-      <td>Afterwork</td>
-      <td>20:00</td>
-      <td>01:30</td>
-    </tr>
-    </tbody>
-  </table>
-</div>-->
+</div>
