@@ -23,6 +23,9 @@ export class TasksComponent implements OnInit {
   secondDateFieldIsHidden:boolean;
   categoryDeleteFailIsHidden:boolean;
   categoryDeleteSuccessIsHidden:boolean;
+  taskSavedAlertIsHidden:boolean;
+  titleInputFailAlertIsHidden:boolean;
+  categoryInputFailAlertIsHidden:boolean;
 
   selectedCategory:string;
   options:any;
@@ -40,6 +43,9 @@ export class TasksComponent implements OnInit {
     this.secondDateFieldIsHidden = true;
     this.categoryDeleteFailIsHidden = true;
     this.categoryDeleteSuccessIsHidden = true;
+    this.taskSavedAlertIsHidden = true;
+    this.titleInputFailAlertIsHidden = true;
+    this.categoryInputFailAlertIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -55,8 +61,8 @@ export class TasksComponent implements OnInit {
       }
 
       this.userCategories.sort(function(a, b){
-        if(a.title < b.title) return -1;
-        if(a.title > b.title) return 1;
+        if(a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+        if(a.title.toLowerCase() > b.title.toLowerCase()) return 1;
         return 0;
       })
     });
@@ -68,15 +74,20 @@ export class TasksComponent implements OnInit {
     this.secondDateFieldIsHidden = true;
     this.options = 0;
   }
-  showOneDateOption() {
+  showFirstDateOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = true;
     this.options = 1;
   }
+  showSecondDateOption() {
+    this.firstDateFieldIsHidden = true;
+    this.secondDateFieldIsHidden = false;
+    this.options = 2;
+  }
   showTwoDatesOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = false;
-    this.options = 2;
+    this.options = 3;
   }
 
   // Category delete alerts
@@ -99,11 +110,40 @@ export class TasksComponent implements OnInit {
   }
   hideCategoryDeleteSuccessAlert() { this.categoryDeleteSuccessIsHidden = true; }
 
+  showTaskSavedAlert() {
+    this.taskSavedAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTaskSavedAlert();
+      },
+      3500);
+  }
+  hideTaskSavedAlert() { this.taskSavedAlertIsHidden = true }
+
+  showTitleInputFailAlert() {
+    this.titleInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTitleInputFailAlert();
+      },
+      3500);
+  }
+  hideTitleInputFailAlert() { this.titleInputFailAlertIsHidden = true }
+
+  showCategoryInputFailAlert() {
+    this.categoryInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideCategoryInputFailAlert();
+      },
+      3500);
+  }
+  hideCategoryInputFailAlert() { this.categoryInputFailAlertIsHidden = true }
+
   toggleShowNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
 
-  //TODO: Fix so that deleted category also immediately is removed from selector
   deleteCategory(){
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;
@@ -114,19 +154,23 @@ export class TasksComponent implements OnInit {
         if(this.selectedCategory == 'Standard') {
           this.showCategoryDeleteFailAlert();
         }
-        else if(cat.title == this.selectedCategory) {
+        else if(cat.title == this.selectedCategory && cat.user.username == this.currentUser.username) {
           this.categoryService.deleteCategory(cat.categoryId).subscribe(response => {
-            console.log("response:");
             console.log(response);
             this.showCategoryDeleteSuccessAlert();
 
             let categoryToRemove = document.getElementById(this.selectedCategory);
             let select = document.getElementById("inputCategory");
             select.removeChild(categoryToRemove);
-            /*newOption.selected = true;
-            this.selectedCategory = title;*/
 
-            this.toggleShowNewCategory();
+            try {
+              let newSelection:any = document.getElementById(select.children.item(0).id);
+              newSelection.selected = true;
+              this.selectedCategory = newSelection.id;
+            } catch(e) {
+              console.log(e);
+            }
+
           });
         }
       }
@@ -158,32 +202,53 @@ export class TasksComponent implements OnInit {
   }
 
   onSubmit(form: any): void {
-    console.log(form);
     let task: Task = new Task();
 
-    task.title = form.title;
-    task.description = form.description;
-
-    task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-    task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
-
     task.user = this.currentUser;
+    task.description = form.description;
+    /*
+    If starttime set but endtime null -> endtime = starttime
+    If starttime null but endtime set -> starttime = now()
+    If neither set -> both now()
+     */
+    if((form.startDate == "" && form.endDate == "")) {
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(Date.now());
+    } else if (form.endDate == ""){
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
+    } else if (form.startDate == ""){
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    } else {
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    }
 
-    this.categoryService.getAllCategories().subscribe(categories => {
-      let categoryList:any;
+    if(form.title == "") {
+      this.showTitleInputFailAlert();
+    } else if(!this.selectedCategory) {
+      this.showCategoryInputFailAlert();
+    } else {
+      task.title = form.title;
+      this.categoryService.getAllCategories().subscribe(categories => {
+        let categoryList:any;
 
-      categoryList = categories;
+        categoryList = categories;
 
-      for(let cat of categoryList) {
-        if(cat.title == this.selectedCategory) {
-          task.category = cat;
+        for(let cat of categoryList) {
+          if(cat.title == this.selectedCategory) {
+            task.category = cat;
+          }
         }
-      }
 
-      this.taskService.registerTask(task).subscribe(response => {
-        console.log(response);
+        this.taskService.registerTask(task).subscribe(response => {
+          console.log(response);
+          this.showTaskSavedAlert();
+        });
       });
-    });
+    }
+
 
   }
 }
