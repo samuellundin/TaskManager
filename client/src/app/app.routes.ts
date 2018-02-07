@@ -7,6 +7,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {AboutComponent} from "./about/about.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthenticationGuard} from "./security/authentication.guard";
+import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'auth/register', component: RegisterComponent },
   { path: 'tasks', component: TasksComponent, canActivate: [ AuthenticationGuard ] },
   { path: 'profile', component: ProfileComponent, canActivate: [ AuthenticationGuard ] },
+  { path: 'profile/edit', component: EditProfileComponent, canActivate: [ AuthenticationGuard ] },
   { path: 'about', component: AboutComponent },
 
   { path: '**', redirectTo: 'home' }
