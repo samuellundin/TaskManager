@@ -70,15 +70,20 @@ export class TasksComponent implements OnInit {
     this.secondDateFieldIsHidden = true;
     this.options = 0;
   }
-  showOneDateOption() {
+  showFirstDateOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = true;
     this.options = 1;
   }
+  showSecondDateOption() {
+    this.firstDateFieldIsHidden = true;
+    this.secondDateFieldIsHidden = false;
+    this.options = 2;
+  }
   showTwoDatesOption() {
     this.firstDateFieldIsHidden = false;
     this.secondDateFieldIsHidden = false;
-    this.options = 2;
+    this.options = 3;
   }
 
   // Category delete alerts
@@ -175,13 +180,27 @@ export class TasksComponent implements OnInit {
   onSubmit(form: any): void {
     let task: Task = new Task();
 
+    task.user = this.currentUser;
     task.title = form.title;
     task.description = form.description;
-
-    task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-    task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
-
-    task.user = this.currentUser;
+    /*
+    If starttime set but endtime null -> endtime = starttime
+    If starttime null but endtime set -> starttime = now()
+    If neither set -> both now()
+     */
+    if((form.startDate == "" && form.endDate == "")) {
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(Date.now());
+    } else if (form.endDate == ""){
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
+    } else if (form.startDate == ""){
+      task.startDate = new Date(Date.now());
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    } else {
+      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
+      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
+    }
 
     this.categoryService.getAllCategories().subscribe(categories => {
       let categoryList:any;

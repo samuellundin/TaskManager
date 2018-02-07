@@ -1,4 +1,7 @@
-<div class="col-lg-6">
+<div class="col-lg-7">
+  <h1>Create task</h1>
+  <p class="text-secondary lead small">Here you can create new tasks. You can also create new categories or delete ones already created.</p>
+  <hr>
   <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
     <div class="form-group">
       <label for="inputTaskTitle">Title:</label>
@@ -9,15 +12,18 @@
       <textarea class="form-control" rows="5" id="inputDescription" name="description" placeholder="Enter description of the task" ngModel></textarea>
     </div>
 
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
       <label class="btn btn-sm btn-secondary active" (click)="showNoDateOption()">
         <input type="radio" name="options" id="option1" autocomplete="off" checked [(ngModel)]="options"> No specific date
       </label>
-      <label class="btn btn-sm btn-secondary" (click)="showOneDateOption()">
-        <input type="radio" name="options" id="option2" [(ngModel)]="options"> Start date
+      <label class="btn btn-sm btn-secondary" (click)="showFirstDateOption()">
+        <input type="radio" name="options" id="option2" autocomplete="off" [(ngModel)]="options"> Set start date
+      </label>
+      <label class="btn btn-sm btn-secondary" (click)="showSecondDateOption()">
+        <input type="radio" name="options" id="option3" autocomplete="off" [(ngModel)]="options"> Set end date
       </label>
       <label class="btn btn-sm btn-secondary" (click)="showTwoDatesOption()">
-        <input type="radio" name="options" id="option3" autocomplete="off" [(ngModel)]="options"> Start & end date
+        <input type="radio" name="options" id="option4" autocomplete="off" [(ngModel)]="options"> Set start & end date
       </label>
     </div>
 
@@ -41,14 +47,13 @@
       </div>
     </div>
 
-    <hr>
-    <label for="inputCategoryDiv">Choose category:</label>
+    <label class="mt-3" for="inputCategoryDiv">Choose category:</label>
     <div class="input-group mb-4" id="inputCategoryDiv">
       <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
         <option *ngFor="let category of userCategories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
       </select>
       <button class="btn btn-sm btn-outline-danger ml-1" type="button" (click)="deleteCategory()">Delete this category</button>
-      <button (click)="toggleShowNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Addd new category</button>
+      <button (click)="toggleShowNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
     </div>
     <div class="alert alert-success" [hidden]="categoryDeleteSuccessIsHidden">
       <strong>Category deleted!</strong> If some task were using the category, those tasks are now assigned to Standard category.
