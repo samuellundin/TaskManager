@@ -22,8 +22,8 @@
   <tr *ngFor="let task of tasksByCategory">
     <td>{{task.title}}</td>
     <td>{{task.description}}</td>
-    <td>{{task.startDate | date:'yyyy-MM-dd'}}</td>
-    <td>{{task.endDate | date:'yyyy-MM-dd'}}</td>
+    <td>{{task.startDate | date:'yyyy-MM-dd HH:mm'}}</td>
+    <td>{{task.endDate | date:'yyyy-MM-dd HH:mm'}}</td>
     <td class="text-center">
       <button type="button" class="btn btn-light">
         <i class="fa fa-pencil"></i>
