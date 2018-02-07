@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
   startDate: any;
   endDate: any;
 
-  //selectedTask: any;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,

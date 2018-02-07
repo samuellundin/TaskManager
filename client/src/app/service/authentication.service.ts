@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {LOGIN, REGISTER} from "./api.urls";
+import {LOGIN, REGISTER, USER} from "./api.urls";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import {User} from "../model/user";
@@ -65,6 +65,14 @@ export class AuthenticationService {
 
   setAuthenticatedUser(user: User) {
     this.authenticatedUser.next(user);
+  }
+
+  updateUser(user: User): Observable<any> {
+    return this.http.put(USER.baseUrl + '/update', user).map(response => {
+      localStorage.setItem(CURRENT_USER, JSON.stringify(response));
+    }).catch((error: any) => {
+      return Observable.throw(error);
+    });
   }
 
 }
