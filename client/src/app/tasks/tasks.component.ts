@@ -24,6 +24,8 @@ export class TasksComponent implements OnInit {
   categoryDeleteFailIsHidden:boolean;
   categoryDeleteSuccessIsHidden:boolean;
   taskSavedAlertIsHidden:boolean;
+  titleInputFailAlertIsHidden:boolean;
+  categoryInputFailAlertIsHidden:boolean;
 
   selectedCategory:string;
   options:any;
@@ -42,6 +44,8 @@ export class TasksComponent implements OnInit {
     this.categoryDeleteFailIsHidden = true;
     this.categoryDeleteSuccessIsHidden = true;
     this.taskSavedAlertIsHidden = true;
+    this.titleInputFailAlertIsHidden = true;
+    this.categoryInputFailAlertIsHidden = true;
 
     // Pushes users created categories into list userCategories
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -116,6 +120,26 @@ export class TasksComponent implements OnInit {
   }
   hideTaskSavedAlert() { this.taskSavedAlertIsHidden = true }
 
+  showTitleInputFailAlert() {
+    this.titleInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideTitleInputFailAlert();
+      },
+      3500);
+  }
+  hideTitleInputFailAlert() { this.titleInputFailAlertIsHidden = true }
+
+  showCategoryInputFailAlert() {
+    this.categoryInputFailAlertIsHidden = false;
+    setTimeout(() =>
+      {
+        this.hideCategoryInputFailAlert();
+      },
+      3500);
+  }
+  hideCategoryInputFailAlert() { this.categoryInputFailAlertIsHidden = true }
+
   toggleShowNewCategory() {
     this.newCategoryIsHidden = !this.newCategoryIsHidden;
   }
@@ -181,7 +205,6 @@ export class TasksComponent implements OnInit {
     let task: Task = new Task();
 
     task.user = this.currentUser;
-    task.title = form.title;
     task.description = form.description;
     /*
     If starttime set but endtime null -> endtime = starttime
@@ -202,22 +225,30 @@ export class TasksComponent implements OnInit {
       task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
     }
 
-    this.categoryService.getAllCategories().subscribe(categories => {
-      let categoryList:any;
+    if(form.title == "") {
+      this.showTitleInputFailAlert();
+    } else if(!this.selectedCategory) {
+      this.showCategoryInputFailAlert();
+    } else {
+      task.title = form.title;
+      this.categoryService.getAllCategories().subscribe(categories => {
+        let categoryList:any;
 
-      categoryList = categories;
+        categoryList = categories;
 
-      for(let cat of categoryList) {
-        if(cat.title == this.selectedCategory) {
-          task.category = cat;
+        for(let cat of categoryList) {
+          if(cat.title == this.selectedCategory) {
+            task.category = cat;
+          }
         }
-      }
 
-      this.taskService.registerTask(task).subscribe(response => {
-        console.log(response);
-        this.showTaskSavedAlert();
+        this.taskService.registerTask(task).subscribe(response => {
+          console.log(response);
+          this.showTaskSavedAlert();
+        });
       });
-    });
+    }
+
 
   }
 }

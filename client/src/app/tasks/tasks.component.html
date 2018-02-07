@@ -7,6 +7,10 @@
       <label for="inputTaskTitle">Title:</label>
       <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter task title" ngModel>
     </div>
+    <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
+      <strong>Required field!</strong> You have to fill in a title for your new task.
+    </div>
+
     <div class="form-group">
       <label for="inputDescription">Description:</label>
       <textarea class="form-control" rows="5" id="inputDescription" name="description" placeholder="Enter description of the task" ngModel></textarea>
@@ -54,6 +58,9 @@
       </select>
       <button class="btn btn-sm btn-outline-danger ml-1" type="button" (click)="deleteCategory()">Delete this category</button>
       <button (click)="toggleShowNewCategory()" class="btn btn-outline-success btn-sm ml-1" type="button">Add new category</button>
+    </div>
+    <div class="alert alert-danger" [hidden]="categoryInputFailAlertIsHidden">
+      <strong>Required field!</strong> You have to choose a category for your task.
     </div>
     <div class="alert alert-success" [hidden]="categoryDeleteSuccessIsHidden">
       <strong>Category deleted!</strong> If some task were using the category, those tasks are now assigned to Standard category.
