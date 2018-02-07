@@ -29,6 +29,9 @@ export class ProfileComponent implements OnInit {
     this.updatingUser = true;
   }
 
+  newPassword(){
+
+  }
   saveUpdatedUser() {
     this.userService.updateUser(this.currentUser).subscribe(data => {
       this.currentUser = data;
