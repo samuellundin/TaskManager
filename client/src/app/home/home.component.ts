@@ -183,7 +183,6 @@ export class HomeComponent implements OnInit {
         }
 
         this.taskService.updateTask(task).subscribe(response => {
-          console.log(response);
           this.showTaskSavedAlert();
         });
       });

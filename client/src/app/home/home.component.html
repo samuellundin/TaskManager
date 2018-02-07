@@ -55,8 +55,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <label class="font-weight-bold">Title: </label> {{selectedTask.title}}<br>
-        <label class="font-weight-bold">Description: </label><br>
+        <label class="font-weight-bold">Title </label> {{selectedTask.title}}<br>
+        <label class="font-weight-bold">Description </label><br>
         {{selectedTask.description}}
       </div>
       <div class="modal-footer">
@@ -91,7 +91,7 @@
         </div>
 
         <div class="form-group">
-          <label>Description:</label>
+          <label>Description</label>
           <textarea class="form-control" rows="5" name="description" value="{{selectedTask.description}}" ngModel></textarea>
         </div>
 
@@ -111,7 +111,7 @@
           </div>
         </div>
 
-        <label class="mt-3">Choose category:</label>
+        <label class="mt-3">Choose category</label>
         <div class="input-group mb-4" id="inputCategoryDiv">
           <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
             <option *ngFor="let category of categories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
