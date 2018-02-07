@@ -1,39 +1,39 @@
-<div class="col-lg-6 col-md-8 col-sm-12">
+<div class="container col-lg-6 col-md-8 col-sm-12">
   <h1>Create task</h1>
   <p class="text-secondary lead small">Here you can create new tasks. You can also create new categories or delete ones already created.</p>
   <hr>
   <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
-    <div class="form-group">
-      <label for="inputTaskTitle">Title:</label>
+    <div class="form-group bg-info text-light border border-dark">
+      <label for="inputTaskTitle" class="mb-0 ml-2">Title:</label>
       <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter task title" ngModel>
     </div>
     <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
       <strong>Required field!</strong> You have to fill in a title for your new task.
     </div>
 
-    <div class="form-group">
-      <label for="inputDescription">Description:</label>
+    <div class="form-group bg-info text-light border border-dark">
+      <label for="inputDescription" class="mb-0 ml-2">Description:</label>
       <textarea class="form-control" rows="5" id="inputDescription" name="description" placeholder="Enter description of the task" ngModel></textarea>
     </div>
 
     <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
-      <label class="btn btn-sm btn-secondary active" (click)="showNoDateOption()">
+      <label class="btn btn-sm btn-info active border border-dark" (click)="showNoDateOption()">
         <input type="radio" name="options" id="option1" autocomplete="off" checked [(ngModel)]="options"> No specific date
       </label>
-      <label class="btn btn-sm btn-secondary" (click)="showFirstDateOption()">
+      <label class="btn btn-sm btn-info border border-dark" (click)="showFirstDateOption()">
         <input type="radio" name="options" id="option2" autocomplete="off" [(ngModel)]="options"> Set start date
       </label>
-      <label class="btn btn-sm btn-secondary" (click)="showSecondDateOption()">
+      <label class="btn btn-sm btn-info border border-dark" (click)="showSecondDateOption()">
         <input type="radio" name="options" id="option3" autocomplete="off" [(ngModel)]="options"> Set end date
       </label>
-      <label class="btn btn-sm btn-secondary" (click)="showTwoDatesOption()">
+      <label class="btn btn-sm btn-info border border-dark" (click)="showTwoDatesOption()">
         <input type="radio" name="options" id="option4" autocomplete="off" [(ngModel)]="options"> Set start & end date
       </label>
     </div>
 
-    <div class="mt-3" [hidden]="firstDateFieldIsHidden">
+    <div class="mt-3 bg-info text-light text-center border border-dark" [hidden]="firstDateFieldIsHidden">
       <label class="form-check-label" for="inputStartDate">
-        Start date
+        Start date & time:
       </label>
       <div class="input-group" id="inputStartDate">
         <input type="date" class="form-control" name="startDate" placeholder="Starting date" ngModel>
@@ -41,16 +41,16 @@
       </div>
     </div>
 
-    <div class="mt-3" [hidden]="secondDateFieldIsHidden">
+    <div class="mt-3 bg-info text-light text-center border border-dark" [hidden]="secondDateFieldIsHidden">
       <label class="form-check-label" for="inputEndDate">
-        End date
+        End date & time:
       </label>
       <div class="input-group" id="inputEndDate">
         <input type="date" class="form-control" name="endDate" placeholder="Ending date" ngModel>
         <input type="time" class="form-control" name="endTime" placeholder="Ending time" ngModel>
       </div>
     </div>
-
+    
     <label class="mt-3" for="inputCategoryDiv">Choose category:</label>
     <div class="input-group mb-4" id="inputCategoryDiv">
       <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
