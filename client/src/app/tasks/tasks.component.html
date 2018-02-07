@@ -64,7 +64,7 @@
       </div>
     </div>
     <hr>
-    <button type="submit" class="btn btn-lg btn-primary">Create task</button>
+    <button [disabled]="!taskForm.dirty" type="submit" class="btn btn-lg btn-primary">Create task</button>
     <div class="alert alert-success mt-2" [hidden]="taskSavedAlertIsHidden">
       <strong>Task saved!</strong> You can now see it amongst your other tasks on your Home page.
     </div>
