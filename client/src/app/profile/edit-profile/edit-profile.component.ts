@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class EditProfileComponent implements OnInit {
 
+  oldPassword: string = '';
   model: any = {};
   usernameTaken: boolean = false;
 
@@ -20,17 +21,23 @@ export class EditProfileComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(user => {
       this.model = user;
+      this.oldPassword = user.password;
       this.model.password = '';
     })
   }
 
   save() {
+    if(!this.model.password) {
+      this.model.password = this.oldPassword;
+    }
     this.authenticationService.updateUser(this.model).subscribe(data => {
         this.router.navigate(['/profile']);
     }, error => {
+      this.model.password = '';
       this.usernameTaken = true;
     });
   }
+
 
   cancel() {
     this.router.navigate(['/profile']);
@@ -39,8 +46,6 @@ export class EditProfileComponent implements OnInit {
   passwordMatch(): boolean {
     if(this.model.password && this.model.confirmPassword) {
       if(this.model.password.length < 1 && this.model.confirmPassword.length < 1) {
-        return true;
-      } else {
         return this.model.password == this.model.confirmPassword;
       }
     } else {
