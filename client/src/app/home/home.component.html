@@ -101,7 +101,7 @@
 
           <div class="form-group">
             <label for="startDate">Start date & time</label>
-            <input type="date" class="form-control" [(ngModel)]="taskStartDate" #startDate="ngModel" name="startDate" id="startDate" required>
+            <input type="date" class="form-control" [(ngModel)]="taskStartDate" #startDate="ngModel" name="startDate"  max="2999-12-31" id="startDate" required>
             <input type="time" class="form-control" [(ngModel)]="taskStartTime" #startTime="ngModel" name="startTime" id="startTime" required>
             <div *ngIf="startDate.errors && (startDate.dirty || startDate.touched)" class="alert alert-danger">
               You have to set start date.
@@ -113,7 +113,7 @@
 
           <div class="form-group">
             <label for="endDate">End date & time</label>
-            <input type="date" class="form-control" [(ngModel)]="taskEndDate" #endDate="ngModel" name="endDate" id="endDate" required>
+            <input type="date" class="form-control" [(ngModel)]="taskEndDate" #endDate="ngModel" name="endDate"  max="2999-12-31" id="endDate" required>
             <input type="time" class="form-control" [(ngModel)]="taskEndTime" #endTime="ngModel" name="endTime" id="endTime" required>
             <div *ngIf="endDate.errors && (endDate.dirty || endDate.touched)" class="alert alert-danger">
               You have to set end date.
