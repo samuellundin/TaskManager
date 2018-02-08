@@ -1,6 +1,13 @@
 body {
   background-color: #ededed !important;
+  height: 100%;
+}
+html {
+  height: 100%;
 }
 .login-button {
   cursor: pointer;
+}
+.container {
+  min-height: calc(100% - 184px);
 }
