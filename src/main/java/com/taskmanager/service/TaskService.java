@@ -52,6 +52,7 @@ public class TaskService {
         for (Task task : tasks) {
             taskModels.add(new TaskModel(task));
         }
+
         return taskModels;
     }
 

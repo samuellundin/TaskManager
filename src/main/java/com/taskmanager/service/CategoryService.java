@@ -35,6 +35,9 @@ public class CategoryService {
         for (Category category : categories) {
             categoryModels.add(new CategoryModel(category, category.getUser()));
         }
+        if(!defaultCategoryExists(categoryModels)) {
+            categoryModels.add(getDefaultCategory(user));
+        }
         return categoryModels;
     }
 
@@ -62,7 +65,7 @@ public class CategoryService {
                     Category fallbackCategory = null;
                     List<Category> fallbackCategories = categoryRepository.findAll();
                     for(Category cat : fallbackCategories) {
-                        if (cat.getTitle().equals("Standard")) {
+                        if (cat.getTitle().equals("Default")) {
                             fallbackCategory = cat;
                         }
                     }
@@ -77,5 +80,21 @@ public class CategoryService {
 
     public Category getCategoryById(Long categoryId) {
         return categoryRepository.findOne(categoryId);
+    }
+
+    private boolean defaultCategoryExists(List<CategoryModel> categoryModels) {
+        for (CategoryModel categoryModel : categoryModels) {
+            if (categoryModel.getTitle().equals("Default")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private CategoryModel getDefaultCategory(User user) {
+        Category category = new Category();
+        category.setTitle("Default");
+        category.setUser(user);
+        return new CategoryModel(categoryRepository.save(category));
     }
 }
