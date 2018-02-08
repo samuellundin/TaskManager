@@ -36,24 +36,34 @@ export class LoginComponent implements OnInit {
     });
 
     this.authenticationService.getCurrentUser().subscribe(user => {
-      if(this.model.username == user.username) {
-        if(this.count < 1) this.createStandardCategory(user);
+      console.log("model:" + this.model.username);
+      if(user)console.log("user:" + user.username);
+      else console.log("no user");
+      if(user && this.model.username == user.username) {
+        if(this.count < 1) {
+          this.count++;
+          this.createStandardCategory(user);
+        }
       }
     });
   }
 
   createStandardCategory(user) {
-    this.count++;
 
+    console.log("inside createStandardCategory() with userId " + user.userId);
     this.categoryService.getCategoryByUserId(user.userId).subscribe(categories => {
+      console.log("after getCategoryByUserId()");
       let categoryList:any = categories;
+      console.log("categoryList:");
+      console.log(categoryList);
       for(let category of categoryList) {
         if(category.title == "Standard") {
           this.standardCategoryExists = true;
         }
       }
-
+      console.log("standardCategoryExists?" + this.standardCategoryExists);
       if(!this.standardCategoryExists) {
+        console.log("Create standard category");
         this.standardCategory = new Category();
         this.standardCategory.title = "Standard";
         this.standardCategory.user = user;
