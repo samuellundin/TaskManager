@@ -48,6 +48,7 @@ export class AuthenticationService {
 
   logout(): void {
     this.currentUser = null;
+    this.authenticatedUser = new BehaviorSubject<any>(null);
     localStorage.removeItem(JWT_TOKEN);
     localStorage.removeItem(CURRENT_USER);
     this.router.navigate(['/home']);
