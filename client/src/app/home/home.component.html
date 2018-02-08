@@ -1,41 +1,51 @@
-<div class="d-flex mb-2">
-  <h2 class="mr-auto p-2">Tasks</h2>
-  <select class="form-control p-2 col-5" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)"
-          name="category">
-    <option [ngValue]="0">All Categories</option>
-    <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
-  </select>
+<div *ngIf="currentUser">
+
+  <div class="d-flex mb-2">
+    <h2 class="mr-auto p-2">Tasks</h2>
+    <select class="form-control p-2 col-5" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)"
+            name="category">
+      <option [ngValue]="0">All Categories</option>
+      <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
+    </select>
+  </div>
+
+  <hr>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col" class="text-center">Tools</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let task of tasksByCategory">
+      <td>{{task.title}}</td>
+      <td>{{task.description}}</td>
+      <td>{{task.startDate | date:'yyyy-MM-dd HH:mm'}}</td>
+      <td>{{task.endDate | date:'yyyy-MM-dd HH:mm'}}</td>
+      <td class="text-center">
+        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#editModal"
+                (click)="editModal(task)">
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                (click)="deleteModal(task)">
+          <i class="fa fa-times"></i>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
 
-<hr>
-<table class="table table-bordered">
-  <thead>
-  <tr>
-    <th scope="col">Title</th>
-    <th scope="col">Description</th>
-    <th scope="col">Start Date</th>
-    <th scope="col">End Date</th>
-    <th scope="col" class="text-center">Tools</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let task of tasksByCategory">
-    <td>{{task.title}}</td>
-    <td>{{task.description}}</td>
-    <td>{{task.startDate | date:'yyyy-MM-dd HH:mm'}}</td>
-    <td>{{task.endDate | date:'yyyy-MM-dd HH:mm'}}</td>
-    <td class="text-center">
-      <button type="button" class="btn btn-light" data-toggle="modal" data-target="#editModal" (click)="editModal(task)">
-        <i class="fa fa-pencil"></i>
-      </button>
-      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" (click)="deleteModal(task)">
-        <i class="fa fa-times"></i>
-      </button>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
+<div *ngIf="!currentUser" class="mb-4">
+  <h2 class="mb-3">Welcome to TaskManager!</h2>
+  <p>Login to create tasks and categories for your activities.</p>
+</div>
 {{form1}}
 {{form2}}
 {{form3}}
@@ -78,57 +88,60 @@
         </button>
       </div>
       <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
-      <div class="modal-body">
-        <div class="alert alert-danger" [hidden]="idFailAlertIsHidden">
-          <strong>Something went wrong!</strong>
-        </div>
-        <div class="form-group">
-          <label>Title</label>
-          <input type="text" class="form-control" name="title" value="{{selectedTask.title}}" ngModel>
-        </div>
-        <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
-          <strong>Required field!</strong>
-        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" [hidden]="idFailAlertIsHidden">
+            <strong>Something went wrong!</strong>
+          </div>
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" value="{{selectedTask.title}}" ngModel>
+          </div>
+          <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
+            <strong>Required field!</strong>
+          </div>
 
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="5" name="description" value="{{selectedTask.description}}" ngModel></textarea>
-        </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="5" name="description" value="{{selectedTask.description}}"
+                      ngModel></textarea>
+          </div>
 
-        <div class="mt-3">
-          <label>Start date</label>
-          <div class="input-group" id="inputStartDate">
-            <input type="date" class="form-control" name="startDate" value="{{selectedTask.startDate}}" ngModel>
-            <input type="time" class="form-control" name="startTime" value="{{selectedTask.startDate}}" ngModel>
+          <div class="mt-3">
+            <label>Start date</label>
+            <div class="input-group" id="inputStartDate">
+              <input type="date" class="form-control" name="startDate" value="{{selectedTask.startDate}}" ngModel>
+              <input type="time" class="form-control" name="startTime" value="{{selectedTask.startDate}}" ngModel>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <label>End date</label>
+            <div class="input-group" id="inputEndDate">
+              <input type="date" class="form-control" name="endDate" placeholder="" ngModel>
+              <input type="time" class="form-control" name="endTime" placeholder="" ngModel>
+            </div>
+          </div>
+
+          <label class="mt-3">Choose category</label>
+          <div class="input-group mb-4" id="inputCategoryDiv">
+            <select class="form-control col-lg-6" id="inputCategory" name="category" [(ngModel)]="selectedCategory">
+              <option *ngFor="let category of categories" value="{{category.title}}" id="{{category.title}}">
+                {{category.title}}
+              </option>
+            </select>
+          </div>
+          <div class="alert alert-danger" [hidden]="categoryInputFailAlertIsHidden">
+            <strong>Required field!</strong>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button [disabled]="!taskForm.dirty" type="submit" class="btn btn-primary">Edit task</button>
+          <div class="alert alert-success mt-2" [hidden]="taskSavedAlertIsHidden">
+            <strong>Task edited!</strong>
           </div>
         </div>
-
-        <div class="mt-3">
-          <label>End date</label>
-          <div class="input-group" id="inputEndDate">
-            <input type="date" class="form-control" name="endDate" placeholder="" ngModel>
-            <input type="time" class="form-control" name="endTime" placeholder="" ngModel>
-          </div>
-        </div>
-
-        <label class="mt-3">Choose category</label>
-        <div class="input-group mb-4" id="inputCategoryDiv">
-          <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
-            <option *ngFor="let category of categories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
-          </select>
-        </div>
-        <div class="alert alert-danger" [hidden]="categoryInputFailAlertIsHidden">
-          <strong>Required field!</strong>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button [disabled]="!taskForm.dirty" type="submit" class="btn btn-primary">Edit task</button>
-        <div class="alert alert-success mt-2" [hidden]="taskSavedAlertIsHidden">
-          <strong>Task edited!</strong>
-        </div>
-      </div>
       </form>
     </div>
   </div>
