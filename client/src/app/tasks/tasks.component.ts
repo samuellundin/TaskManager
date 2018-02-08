@@ -151,7 +151,7 @@ export class TasksComponent implements OnInit {
       categoryList = categories;
 
       for(let cat of categoryList) {
-        if(this.selectedCategory == 'Standard') {
+        if(this.selectedCategory == 'Default') {
           this.showCategoryDeleteFailAlert();
         }
         else if(cat.title == this.selectedCategory && cat.user.username == this.currentUser.username) {
