@@ -1,11 +1,13 @@
-<div class="d-flex mb-2">
-  <h2 class="mr-auto p-2">Tasks</h2>
-  <select class="form-control p-2 col-5" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)"
-          name="category">
-    <option [ngValue]="0">All Categories</option>
-    <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
-  </select>
-</div>
+<div *ngIf="currentUser">
+
+  <div class="d-flex mb-2">
+    <h2 class="mr-auto p-2">Tasks</h2>
+    <select class="form-control p-2 col-5" [ngModel]="selectedCategory" (ngModelChange)="onChangeCategory($event)"
+            name="category">
+      <option [ngValue]="0">All Categories</option>
+      <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.title}}</option>
+    </select>
+  </div>
 
 <hr>
 <table class="table table-bordered">
@@ -36,13 +38,12 @@
   </tbody>
 </table>
 
-{{form1}}
-{{form2}}
-{{form3}}
-{{form4}}
-{{form5}}
-{{form6}}
-{{form7}}
+</div>
+
+<div *ngIf="!currentUser" class="mb-4">
+  <h2 class="mb-3">Welcome to TaskManager!</h2>
+  <p>Login to create tasks and categories for your activities.</p>
+</div>
 
 <!--Modal delete-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -142,7 +143,3 @@
     </div>
   </div>
 </div>
-
-
-
-

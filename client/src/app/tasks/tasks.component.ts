@@ -151,7 +151,7 @@ export class TasksComponent implements OnInit {
       categoryList = categories;
 
       for(let cat of categoryList) {
-        if(this.selectedCategory == 'Standard') {
+        if(this.selectedCategory == 'Default') {
           this.showCategoryDeleteFailAlert();
         }
         else if(cat.title == this.selectedCategory && cat.user.username == this.currentUser.username) {
@@ -206,21 +206,27 @@ export class TasksComponent implements OnInit {
 
 task.user = this.currentUser;
 task.description = form.description;
+
 /*
 If starttime set but endtime null -> endtime = starttime
 If starttime null but endtime set -> starttime = now()
 If neither set -> both now()
+If date but time not set -> time = 00:00
  */
 if((form.startDate == "" && form.endDate == "")) {
   task.startDate = new Date(Date.now());
   task.endDate = new Date(Date.now());
 } else if (form.endDate == ""){
+  if(form.startTime == "") form.startTime = "00:00";
   task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
   task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
 } else if (form.startDate == ""){
   task.startDate = new Date(Date.now());
+  if(form.endTime == "") form.endTime = "00:00";
   task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
 } else {
+  if(form.startTime == "") form.startTime = "00:00";
+  if(form.endTime == "") form.endTime = "00:00";
   task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
   task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
 }

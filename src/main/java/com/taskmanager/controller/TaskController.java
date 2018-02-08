@@ -1,6 +1,5 @@
 package com.taskmanager.controller;
 
-import com.taskmanager.entity.Task;
 import com.taskmanager.model.TaskModel;
 import com.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;

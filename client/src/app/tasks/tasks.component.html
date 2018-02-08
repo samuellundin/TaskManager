@@ -1,6 +1,8 @@
 <div class="container col-lg-6 col-md-8 col-sm-12">
   <h1>Create task</h1>
-  <p class="text-secondary lead small">Here you can create new tasks. You can also create new categories or delete ones already created.</p>
+  <p class="text-secondary lead small">Here you can create new tasks. You can also create new categories or delete ones already created.
+                                        Note that if you delete a category that is already connected to tasks, those tasks will automatically
+                                        be reassigned to the 'Default' category.</p>
   <hr>
   <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
     <div class="form-group bg-secondary text-light border border-dark">
