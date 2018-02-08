@@ -43,9 +43,9 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PUT)
     private ResponseEntity<TaskModel> updateTask(@RequestBody TaskModel taskModel) {
-        return new ResponseEntity(taskService.updateTask(taskModel), HttpStatus.OK);
+        return new ResponseEntity<>(new TaskModel(taskService.updateTask(taskModel)), HttpStatus.OK);
     }
 
 }

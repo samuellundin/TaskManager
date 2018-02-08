@@ -41,8 +41,13 @@ public class TaskService {
 
     public Task updateTask(TaskModel taskModel) {
         Task task = taskRepository.findOne(taskModel.getTaskId());
+        task.setTitle(taskModel.getTitle());
+        task.setDescription(taskModel.getDescription());
+        task.setStartDate(taskModel.getStartDate());
+        task.setEndDate(taskModel.getEndDate());
         task.setCategory(taskModel.getCategory());
-        return taskRepository.saveAndFlush(task);
+        task.setUser(taskModel.getUser());
+        return taskRepository.save(task);
     }
 
    public List<TaskModel> getTasksByCategoryId(Long categoryId) {

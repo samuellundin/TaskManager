@@ -77,59 +77,72 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm.value)">
+      <form #f="ngForm">
       <div class="modal-body">
-        <div class="alert alert-danger" [hidden]="idFailAlertIsHidden">
-          <strong>Something went wrong!</strong>
-        </div>
-        <div class="form-group">
-          <label>Title</label>
-          <input type="text" class="form-control" name="title" value="{{selectedTask.title}}" ngModel>
-        </div>
-        <div class="alert alert-danger" [hidden]="titleInputFailAlertIsHidden">
-          <strong>Required field!</strong>
-        </div>
-
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="5" name="description" value="{{selectedTask.description}}" ngModel></textarea>
-        </div>
-
-        <div class="mt-3">
-          <label>Start date</label>
-          <div class="input-group" id="inputStartDate">
-            <input type="date" class="form-control" name="startDate" value="{{selectedTask.startDate}}" ngModel>
-            <input type="time" class="form-control" name="startTime" value="{{selectedTask.startDate}}" ngModel>
-          </div>
-        </div>
-
-        <div class="mt-3">
-          <label>End date</label>
-          <div class="input-group" id="inputEndDate">
-            <input type="date" class="form-control" name="endDate" placeholder="" ngModel>
-            <input type="time" class="form-control" name="endTime" placeholder="" ngModel>
-          </div>
-        </div>
-
-        <label class="mt-3">Choose category</label>
-        <div class="input-group mb-4" id="inputCategoryDiv">
-          <select class="form-control col-lg-6" id="inputCategory" name ="category" [(ngModel)]="selectedCategory">
-            <option *ngFor="let category of categories" value="{{category.title}}" id="{{category.title}}">{{category.title}}</option>
-          </select>
-        </div>
-        <div class="alert alert-danger" [hidden]="categoryInputFailAlertIsHidden">
-          <strong>Required field!</strong>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button [disabled]="!taskForm.dirty" type="submit" class="btn btn-primary">Edit task</button>
         <div class="alert alert-success mt-2" [hidden]="taskSavedAlertIsHidden">
           <strong>Task edited!</strong>
         </div>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" [(ngModel)]="model.title" #title="ngModel" name="title" id="title" minlength="2" required>
+            <div *ngIf="title.errors && (title.dirty || title.touched)" class="alert alert-danger">
+              Title must be at least 2 characters.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" [ngModel]="model.description" (ngModelChange)="model.description=$event" #description="ngModel" name="description" id="description" minlength="2" required>
+            <div *ngIf="description.errors && (description.dirty || description.touched)" class="alert alert-danger">
+              Description must be at least 2 characters.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="startDate">Start date & time</label>
+            <input type="date" class="form-control" [(ngModel)]="taskStartDate" #startDate="ngModel" name="startDate" id="startDate" required>
+            <input type="time" class="form-control" [(ngModel)]="taskStartTime" #startTime="ngModel" name="startTime" id="startTime" required>
+            <div *ngIf="startDate.errors && (startDate.dirty || startDate.touched)" class="alert alert-danger">
+              You have to set start date.
+            </div>
+            <div *ngIf="startTime.errors && (startTime.dirty || startTime.touched)" class="alert alert-danger">
+              You have to set start time.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="endDate">End date & time</label>
+            <input type="date" class="form-control" [(ngModel)]="taskEndDate" #endDate="ngModel" name="endDate" id="endDate" required>
+            <input type="time" class="form-control" [(ngModel)]="taskEndTime" #endTime="ngModel" name="endTime" id="endTime" required>
+            <div *ngIf="endDate.errors && (endDate.dirty || endDate.touched)" class="alert alert-danger">
+              You have to set end date.
+            </div>
+            <div *ngIf="endTime.errors && (endTime.dirty || endTime.touched)" class="alert alert-danger">
+              You have to set end time.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Choose category</label>
+            <select class="form-control" [(ngModel)]="model.category" #category="ngModel" name="category" id="category" required>
+              <option *ngFor="let category of categories" selected="category.categoryId == model.category.categoryid" [ngValue]="category">{{category.title}}</option>
+            </select>
+            <div *ngIf="category.errors && (category.dirty || category.touched)" class="alert alert-danger">
+              You have to choose category.
+            </div>
+          </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" [disabled]="!f.valid" (click)="update()">Save</button>
       </div>
       </form>
     </div>
   </div>
 </div>
+
+
+
+

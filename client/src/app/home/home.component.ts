@@ -23,10 +23,13 @@ export class HomeComponent implements OnInit {
   startDate: any;
   endDate: any;
 
-  idFailAlertIsHidden: boolean;
-  taskSavedAlertIsHidden: boolean;
-  titleInputFailAlertIsHidden: boolean;
-  categoryInputFailAlertIsHidden: boolean;
+  model: any = {};
+  taskSavedAlertIsHidden:boolean;
+
+  taskStartDate: any;
+  taskStartTime: any;
+  taskEndDate: any;
+  taskEndTime: any;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -61,10 +64,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.idFailAlertIsHidden = true;
     this.taskSavedAlertIsHidden = true;
-    this.titleInputFailAlertIsHidden = true;
-    this.categoryInputFailAlertIsHidden = true;
 
   }
 
@@ -83,6 +83,7 @@ export class HomeComponent implements OnInit {
 
   editModal(task) {
     this.selectedTask = task;
+    this.model = task;
   }
 
   onChangeCategory(categoryId: number) {
@@ -94,16 +95,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  showIdFailAlert() {
-    this.idFailAlertIsHidden = false;
-    setTimeout(() =>
-      {
-        this.hideIdFailAlert();
-      },
-      3500);
-  }
-  hideIdFailAlert() { this.idFailAlertIsHidden = true }
-
   showTaskSavedAlert() {
     this.taskSavedAlertIsHidden = false;
     setTimeout(() =>
@@ -114,78 +105,20 @@ export class HomeComponent implements OnInit {
   }
   hideTaskSavedAlert() { this.taskSavedAlertIsHidden = true }
 
-  showTitleInputFailAlert() {
-    this.titleInputFailAlertIsHidden = false;
-    setTimeout(() =>
-      {
-        this.hideTitleInputFailAlert();
-      },
-      3500);
-  }
-  hideTitleInputFailAlert() { this.titleInputFailAlertIsHidden = true }
+  update() {
 
-  showCategoryInputFailAlert() {
-    this.categoryInputFailAlertIsHidden = false;
-    setTimeout(() =>
-      {
-        this.hideCategoryInputFailAlert();
-      },
-      3500);
-  }
-  hideCategoryInputFailAlert() { this.categoryInputFailAlertIsHidden = true }
+    this.model.user = this.currentUser;
 
-  onSubmit(form: any): void {
-    let task: Task = new Task();
+    this.model.startDate = new Date(this.taskStartDate + " " + this.taskStartTime + ":00");
+    this.model.endDate = new Date(this.taskEndDate + " " + this.taskEndTime + ":00");
+    console.log(this.model.startDate);
 
-    console.log(form);
 
-    if(this.selectedTask.taskId == null) {
-      this.showIdFailAlert();
-    } else if(this.currentUser.userId == null) {
-      this.showIdFailAlert();
-    } else {
-    task.user = this.currentUser;
-    task.taskId = this.selectedTask.taskId;
-    }
-
-    if((form.startDate == "" && form.endDate == "")) {
-      task.startDate = new Date(Date.now());
-      task.endDate = new Date(Date.now());
-    } else if (form.endDate == ""){
-      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-      task.endDate = new Date(form.startDate + " " + form.startTime + ":00");
-    } else if (form.startDate == ""){
-      task.startDate = new Date(Date.now());
-      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
-    } else {
-      task.startDate = new Date(form.startDate + " " + form.startTime + ":00");
-      task.endDate = new Date(form.endDate + " " + form.endTime + ":00");
-    }
-
-    if(form.title == "") {
-      this.showTitleInputFailAlert();
-    } else if(form.category == "") {
-      this.showCategoryInputFailAlert();
-    } else {
-      task.title = form.title;
-      task.description = form.description;
-    }
-
-      this.categoryService.getAllCategories().subscribe(categories => {
-        let categoryObj:any;
-
-        categoryObj = categories;
-
-        for(let category of categoryObj) {
-          if(category.title == this.selectedCategory) {
-            task.category = category;
-          }
-        }
-
-        this.taskService.updateTask(task).subscribe(response => {
-          this.showTaskSavedAlert();
-        });
+      this.taskService.updateTask(this.model).subscribe(data => {
+        console.log(data);
+        console.log(this.model.startDate);
+        this.showTaskSavedAlert();
       });
-
   }
+
 }
